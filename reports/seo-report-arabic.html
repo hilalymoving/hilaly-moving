@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تقرير تحسين محركات البحث - هلالي موفينج</title>
+  <style>
+    body { font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; color: #1e293b; line-height: 1.8; }
+    h1 { color: #D4A017; font-size: 28px; border-bottom: 3px solid #D4A017; padding-bottom: 12px; }
+    h2 { color: #4f46e5; font-size: 20px; margin-top: 30px; padding-right: 8px; border-right: 4px solid #4f46e5; }
+    h3 { color: #0f172a; font-size: 17px; margin-top: 20px; }
+    .score-box { display: inline-block; background: #f1f5f9; padding: 6px 16px; border-radius: 8px; font-weight: bold; }
+    .green { color: #10b981; }
+    .red { color: #ef4444; }
+    .orange { color: #f59e0b; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 14px; }
+    th, td { border: 1px solid #e2e8f0; padding: 10px 12px; text-align: right; }
+    th { background: #4f46e5; color: white; font-weight: 700; }
+    tr:nth-child(even) { background: #f8fafc; }
+    tr:nth-child(odd) { background: #fff; }
+    .fixed { background: #d1fae5; }
+    .fixed-badge { display: inline-block; background: #10b981; color: white; padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .pending-badge { display: inline-block; background: #f59e0b; color: white; padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .critical-badge { display: inline-block; background: #ef4444; color: white; padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .summary-card { background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 12px; padding: 20px; margin: 15px 0; border: 1px solid #e2e8f0; }
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0; color: #64748b; font-size: 13px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <h1>📊 تقرير تحسين محركات البحث (SEO)</h1>
+  <p style="font-size: 16px; color: #64748b;">
+    <strong>الموقع:</strong> helalymoving.tryasp.net &nbsp;|&nbsp; 
+    <strong>التاريخ:</strong> 17 يونيو 2026 &nbsp;|&nbsp; 
+    <strong>إعداد:</strong> مستشار SEO تقني
+  </p>
+
+  <div class="summary-card">
+    <h2 style="border: none; margin-top: 0;">النتيجة الإجمالية: 34 / 100</h2>
+    <p>الموقع يحتاج إلى تحسينات كبيرة ليظهر في نتائج البحث. تم إصلاح عدة مشاكل تقنية في هذه الجولة.</p>
+  </div>
+
+  <!-- ===== ما تم إصلاحه ===== -->
+  <h2>✅ ما تم إصلاحه (12 تحسينًا)</h2>
+
+  <table>
+    <tr>
+      <th style="width: 10%;">#</th>
+      <th style="width: 35%;">المشكلة</th>
+      <th style="width: 35%;">الإجراء</th>
+      <th style="width: 20%;">التأثير</th>
+    </tr>
+    <tr class="fixed">
+      <td>1</td>
+      <td><strong>روابط التجزئة (#) في خريطة الموقع</strong><br><small>مثل #services, #contact — جوجل لا يقرأها</small></td>
+      <td>تم حذف جميع روابط التجزئة من sitemap.xml، وترك فقط الصفحة الرئيسية</td>
+      <td><span class="fixed-badge">تم</span> عالي</td>
+    </tr>
+    <tr class="fixed">
+      <td>2</td>
+      <td><strong>تكرار إعلان اللغة (hreflang)</strong><br><small>كانت اللغات معلنة مرتين في نفس الصفحة</small></td>
+      <td>تم دمج الإعلانات المكررة في إعلان واحد فقط</td>
+      <td><span class="fixed-badge">تم</span> متوسط</td>
+    </tr>
+    <tr class="fixed">
+      <td>3</td>
+      <td><strong>رابط اللغة الإنجليزية معطل</strong><br><small>الموقع يعلن عن /en لكنه يرجع 404</small></td>
+      <td>تم إزالة إعلان hreflang="en" بالكامل</td>
+      <td><span class="fixed-badge">تم</span> عالي</td>
+    </tr>
+    <tr class="fixed">
+      <td>4</td>
+      <td><strong>تكرار بيانات BreadcrumbList</strong><br><small>كانت موجودة بالعربية والإنجليزية</small></td>
+      <td>حذف النسخة الإنجليزية، إبقاء النسخة العربية</td>
+      <td><span class="fixed-badge">تم</span> متوسط</td>
+    </tr>
+    <tr class="fixed">
+      <td>5</td>
+      <td><strong>تضارب عدد التقييمات</strong><br><small>5,000 مرة و 10,000 مرة أخرى</small></td>
+      <td>تم توحيد الرقم إلى 5,000 تقييم</td>
+      <td><span class="fixed-badge">تم</span> متوسط</td>
+    </tr>
+    <tr class="fixed">
+      <td>6</td>
+      <td><strong>تكرار بيانات FAQPage</strong><br><small>نفس الأسئلة مكررة مرتين</small></td>
+      <td>حذف النسخة المكررة</td>
+      <td><span class="fixed-badge">تم</span> متوسط</td>
+    </tr>
+    <tr class="fixed">
+      <td>7</td>
+      <td><strong>تكرار بيانات MovingCompany</strong><br><small>نفس الشركة معلنة ببيانات مختلفة</small></td>
+      <td>دمج البيانات في كيان واحد متكامل</td>
+      <td><span class="fixed-badge">تم</span> متوسط</td>
+    </tr>
+    <tr class="fixed">
+      <td>8</td>
+      <td><strong>لا يوجد محتوى عند تعطيل JavaScript</strong><br><small>الصفحة تظهر بيضاء بالكامل</small></td>
+      <td>إضافة محتوى HTML ثابت يتضمن وصف الشركة، الخدمات، ووسائل الاتصال</td>
+      <td><span class="fixed-badge">تم</span> عالي جدًا</td>
+    </tr>
+    <tr class="fixed">
+      <td>9</td>
+      <td><strong>لا توجد شاشة تحميل</strong><br><small>المستخدم يرى شاشة بيضاء لحين تحميل التطبيق</small></td>
+      <td>إضافة شاشة تحميل (لودر) بلون العلامة التجارية</td>
+      <td><span class="fixed-badge">تم</span> متوسط</td>
+    </tr>
+    <tr class="fixed">
+      <td>10</td>
+      <td><strong>عنوان الصفحة غير محسّن</strong><br><small>العنوان كان يتغير بعد تحميل الصفحة</small></td>
+      <td>توحيد العنوان ليكون متسقًا مع العلامة التجارية</td>
+      <td><span class="fixed-badge">تم</span> متوسط</td>
+    </tr>
+    <tr class="fixed">
+      <td>11</td>
+      <td><strong>حجم حزمة JavaScript كبير</strong><br><small>كل الكود في ملف واحد</small></td>
+      <td>فصل React و ReactDOM في حزمة منفصلة (تحسين التحميل)</td>
+      <td><span class="fixed-badge">تم</span> منخفض</td>
+    </tr>
+    <tr class="fixed">
+      <td>12</td>
+      <td><strong>ملف robots.txt سليم</strong><br><small>تمت المراجعة ولم نجد مشاكل</small></td>
+      <td>لا تغيير مطلوب</td>
+      <td><span class="fixed-badge">تم</span> سليم</td>
+    </tr>
+  </table>
+
+  <!-- ===== المشاكل المتبقية ===== -->
+  <h2>🔴 المشاكل المتبقية (تحتاج إلى حل)</h2>
+
+  <table>
+    <tr>
+      <th style="width: 5%;">#</th>
+      <th style="width: 10%;">الأولوية</th>
+      <th style="width: 40%;">المشكلة</th>
+      <th style="width: 20%;">التأثير</th>
+      <th style="width: 25%;">الحل المقترح</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><span class="critical-badge">عاجل</span></td>
+      <td><strong>اسم النطاق مؤقت (tryasp.net)</strong><br><small>جوجل لا يضع نطاقات التجربة في نتائج البحث</small></td>
+      <td>تأثير 10/10</td>
+      <td>شراء نطاق حقيقي مثل helalymoving.com</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><span class="critical-badge">عاجل</span></td>
+      <td><strong>المحتوى يعمل فقط بتقنية JavaScript</strong><br><small>جوجل يرى صفحة فارغة تقريبًا</small></td>
+      <td>تأثير 9/10</td>
+      <td>تحويل المشروع إلى Next.js أو إضافة معالج مسبق (SSR)</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><span class="critical-badge">عاجل</span></td>
+      <td><strong>لا توجد صفحات منفصلة</strong><br><small>كل المحتوى في صفحة واحدة فقط</small></td>
+      <td>تأثير 9/10</td>
+      <td>إنشاء صفحات: /services /contact /about /pricing</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><span class="critical-badge">عاجل</span></td>
+      <td><strong>لا يوجد Google Business Profile</strong><br><small>أهم عامل ظهور في البحث المحلي</small></td>
+      <td>تأثير 9/10</td>
+      <td>إنشاء حساب في Google Business Profile</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><span class="critical-badge">عاجل</span></td>
+      <td><strong>الموقع غير مسجل في Google Search Console</strong><br><small>لا يمكن معرفة أداء البحث</small></td>
+      <td>تأثير 8/10</td>
+      <td>تسجيل الموقع في Search Console بعد شراء النطاق</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><span class="pending-badge">هام</span></td>
+      <td><strong>لا توجد صفحات للمدن والمناطق</strong><br><small>القاهرة، الإسكندرية، الجيزة يحتاجون صفحات خاصة</small></td>
+      <td>تأثير 7/10</td>
+      <td>إنشاء صفحات: /cairo /alexandria /giza</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><span class="pending-badge">هام</span></td>
+      <td><strong>لا يوجد تدوين (Blog)</strong><br><small>مقالات مفيدة تزيد الثقة وتحسن الترتيب</small></td>
+      <td>تأثير 7/10</td>
+      <td>كتابة 10 مقالات: نصائح نقل الأثاث، أدلة الانتقال</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><span class="pending-badge">هام</span></td>
+      <td><strong>لا توجد روابط من مواقع أخرى</strong><br><small>الموقع جديد وليس له روابط خارجية</small></td>
+      <td>تأثير 7/10</td>
+      <td>التسجيل في الأدلة المصرية: يلوبيدجز، دليل مصر</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><span class="pending-badge">هام</span></td>
+      <td><strong>لا يوجد نموذج حجز / طلب عرض سعر</strong><br><small>يخسر زوار يريدون التواصل</small></td>
+      <td>تأثير 7/10</td>
+      <td>إضافة نموذج "احصل على عرض سعر مجاني"</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><span class="pending-badge">متوسط</span></td>
+      <td><strong>حجم الملفات كبير جدًا</strong><br><small>ملف JavaScript الرئيسي 456 كيلوبايت</small></td>
+      <td>تأثير 5/10</td>
+      <td>تحميل Firebase فقط عند الحاجة (lazy loading)</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td><span class="pending-badge">متوسط</span></td>
+      <td><strong>لا توجد صور محسّنة</strong><br><small>الصور ليس لها وصف بديل (alt text)</small></td>
+      <td>تأثير 4/10</td>
+      <td>إضافة نص بديل لكل صورة يصف محتواها</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><span class="pending-badge">متوسط</span></td>
+      <td><strong>لا يوجد أيقونة للمشاركة (Favicon)</strong><br><small>الصورة المستخدمة JPG وليست ICO</small></td>
+      <td>تأثير 3/10</td>
+      <td>تحويل الأيقونة إلى format .ico بأحجام مختلفة</td>
+    </tr>
+  </table>
+
+  <!-- ===== درجات التقييم ===== -->
+  <h2>📈 درجات التقييم</h2>
+
+  <table>
+    <tr><th>المجال</th><th>الدرجة</th><th>التقييم</th></tr>
+    <tr><td>SEO التقني</td><td>28 / 100</td><td class="red">ضعيف - بسبب النطاق المؤقت وعدم وجود صفحات</td></tr>
+    <tr><td>تحسين الصفحات</td><td>45 / 100</td><td class="orange">مقبول - وسوم ميتا جيدة لكن المحتوى غير قابل للقراءة</td></tr>
+    <tr><td>المحتوى</td><td>20 / 100</td><td class="red">ضعيف - صفحة واحدة فقط ولا يوجد تدوين</td></tr>
+    <tr><td>الأداء</td><td>55 / 100</td><td class="orange">مقبول - تصميم سريع لكن الملفات كبيرة</td></tr>
+    <tr><td>السلطة</td><td>5 / 100</td><td class="red">حرج - لا توجد روابط خارجية أو وجود في Google Business</td></tr>
+    <tr><td>الهاتف المحمول</td><td>60 / 100</td><td class="orange">مقبول - تصميم متجاوب لكن يعتمد على JavaScript</td></tr>
+    <tr><td>البيانات المنظمة</td><td>70 / 100</td><td class="green">جيد - بعد الإصلاحات، لكن يحتاج تطوير</td></tr>
+    <tr><td>SEO المحلي</td><td>10 / 100</td><td class="red">حرج - لا يوجد Google Business ولا تواجد في الأدلة</td></tr>
+  </table>
+
+  <!-- ===== الخطوات القادمة ===== -->
+  <h2>🚀 خارطة الطريق (الأهم فالأهم)</h2>
+
+  <table>
+    <tr><th>المرحلة</th><th>الإجراء</th><th>المدة التقريبية</th></tr>
+    <tr>
+      <td><span class="critical-badge">المرحلة 1</span></td>
+      <td>
+        <strong>شراء نطاق حقيقي ونقل الموقع إليه</strong><br>
+        <small>مثل helalymoving.com ثم ربطه مع Google Search Console</small>
+      </td>
+      <td>1 - 2 يوم</td>
+    </tr>
+    <tr>
+      <td><span class="critical-badge">المرحلة 2</span></td>
+      <td>
+        <strong>تحويل الموقع إلى Next.js أو إضافة SSR</strong><br>
+        <small>لجعل المحتوى مقروءًا لمحركات البحث</small>
+      </td>
+      <td>1 - 2 أسبوع</td>
+    </tr>
+    <tr>
+      <td><span class="critical-badge">المرحلة 3</span></td>
+      <td>
+        <strong>إنشاء 5 صفحات منفصلة</strong><br>
+        <small>خدماتنا، الأسعار، اتصل بنا، من نحن، المعرض</small>
+      </td>
+      <td>1 - 2 أسبوع</td>
+    </tr>
+    <tr>
+      <td><span class="pending-badge">المرحلة 4</span></td>
+      <td>
+        <strong>إنشاء Google Business Profile + أدلة محلية</strong><br>
+        <small>ظهور في خرائط جوجل ويلوبيدجز</small>
+      </td>
+      <td>1 - 3 أيام</td>
+    </tr>
+    <tr>
+      <td><span class="pending-badge">المرحلة 5</span></td>
+      <td>
+        <strong>كتابة مقالات + إنشاء صفحات مدن</strong><br>
+        <small>تحسين الظهور في البحث</small>
+      </td>
+      <td>2 - 4 أسابيع</td>
+    </tr>
+  </table>
+
+  <div class="footer">
+    <p>تم إعداد هذا التقرير بواسطة مستشار SEO تقني – 17 يونيو 2026</p>
+    <p>للاستفسارات: يرجى التواصل مع فريق التطوير</p>
+  </div>
+
+</body>
+</html>

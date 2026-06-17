@@ -1,0 +1,24 @@
+I am working on the NaqlaPlus project (React + Vite). I want to implement the first batch of improvements as follows:
+
+1. Expand the service types in `cms.js` to include:
+   - International Relocation (air/ocean freight)
+   - Corporate / Office Moving
+   - Vehicle Transport
+   - Fine Arts & Antiques moving
+
+2. Add a "Storage Solutions" section (short-term / long-term).
+
+3. Clarify insurance: Add text in the services section, footer, or each service description stating that "All items are insured during transit."
+
+4. Update `cms.js` to include these services with appropriate icons (you can use icons from react-icons or suggest suitable alternatives).
+
+5. Ensure these new services appear automatically in the main `Sections.jsx` component (or whichever component renders services) based on the data from `cms.js`.
+
+6. Maintain bilingual support (Arabic RTL and English LTR) and responsive design.
+
+Please provide the updated code for the following files:
+- `src/cms.js`
+- `src/components/Sections.jsx` (or the component responsible for rendering services)
+- Any other files that need changes.
+
+Do not modify BookingForm.jsx at this stage.

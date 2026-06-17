@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #f8fafc;
+  --color-bg-card: #ffffff;
+  --color-bg-nav: rgba(255,255,255,0.88);
+  --color-bg-section: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-accent: #4f46e5;
+  --color-accent-light: #eef2ff;
+  --color-accent-text: #4338ca;
+  --color-green: #10b981;
+  --shadow-brand: 0 20px 60px rgba(0,0,0,0.08);
+  --shadow-brand-sm: 0 4px 16px rgba(0,0,0,0.06);
+  --hero-gradient: linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);
+}
+
+.dark {
+  --color-bg: #020617;
+  --color-bg-card: #0f172a;
+  --color-bg-nav: rgba(2,6,23,0.9);
+  --color-bg-section: #0f172a;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-border: #1e293b;
+  --color-accent: #6366f1;
+  --color-accent-light: #1e1b4b;
+  --color-accent-text: #818cf8;
+  --color-green: #34d399;
+  --shadow-brand: 0 20px 60px rgba(0,0,0,0.5);
+  --shadow-brand-sm: 0 4px 16px rgba(0,0,0,0.35);
+  --hero-gradient: linear-gradient(135deg,#020617 0%,#1e1b4b 50%,#020617 100%);
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+}
