@@ -84,6 +84,65 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
   const [dirty, setDirty] = useState(false)
   const [authLoading, setAuthLoading] = useState(true)
 
+  // Settings tab state
+  const [settingsEmail, setSettingsEmail] = useState('')
+  const [newEmail, setNewEmail] = useState('')
+  const [newPwd, setNewPwd] = useState('')
+  const [confirmPwd, setConfirmPwd] = useState('')
+  const [currentPwd, setCurrentPwd] = useState('')
+  const [settingsErr, setSettingsErr] = useState('')
+  const [settingsOk, setSettingsOk] = useState('')
+  const [settingsBusy, setSettingsBusy] = useState(false)
+
+  // Load current user email once authenticated
+  useEffect(() => {
+    (async () => {
+      try {
+        const { getAuth } = await import('firebase/auth')
+        const user = getAuth().currentUser
+        if (user) setSettingsEmail(user.email || '')
+      } catch {}
+    })()
+  }, [auth])
+
+  const handleSettingsSave = async () => {
+    setSettingsErr(''); setSettingsOk('')
+    if (!currentPwd) { setSettingsErr('يرجى إدخال كلمة المرور الحالية للتأكيد'); return }
+    if (newPwd && newPwd !== confirmPwd) { setSettingsErr('كلمة المرور الجديدة غير متطابقة مع التأكيد'); return }
+    if (newPwd && newPwd.length < 6) { setSettingsErr('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل'); return }
+    setSettingsBusy(true)
+    try {
+      const { getAuth, EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } = await import('firebase/auth')
+      const auth2 = getAuth()
+      const user = auth2.currentUser
+      if (!user) { setSettingsErr('لا يوجد مستخدم مسجل دخوله'); setSettingsBusy(false); return }
+
+      const credential = EmailAuthProvider.credential(user.email, currentPwd)
+      await reauthenticateWithCredential(user, credential)
+
+      if (newEmail && newEmail !== user.email) {
+        await updateEmail(user, newEmail)
+      }
+      if (newPwd) {
+        await updatePassword(user, newPwd)
+      }
+
+      const updatedUser = getAuth().currentUser
+      if (updatedUser) setSettingsEmail(updatedUser.email || '')
+      setNewEmail(''); setNewPwd(''); setConfirmPwd(''); setCurrentPwd('')
+      setSettingsOk('✅ تم تحديث بيانات الدخول بنجاح')
+    } catch (e) {
+      const msgs = {
+        'auth/requires-recent-login': 'يرجى تسجيل الخروج وإعادة تسجيل الدخول ثم المحاولة مرة أخرى',
+        'auth/wrong-password': 'كلمة المرور الحالية غير صحيحة',
+        'auth/invalid-email': 'البريد الإلكتروني غير صالح',
+        'auth/email-already-in-use': 'البريد الإلكتروني مستخدم بالفعل في حساب آخر',
+        'auth/weak-password': 'كلمة المرور ضعيفة — استخدم 6 أحرف على الأقل',
+      }
+      setSettingsErr(msgs[e.code] || 'فشل التحديث: ' + e.message)
+    } finally { setSettingsBusy(false) }
+  }
+
   // Persistent auth session across page reloads
   useEffect(() => {
     (async () => {
@@ -204,7 +263,8 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
 
          {/* Tabs */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
-            {[['contacts', '📞 أرقام التواصل'], ['hero', '🎬 البطل الرئيسي'], ['media', '🖼️ الصور والفيديو'], ['popup', '🎁 عرض منبثق'], ['slider', '🖼️ عرض الشرائح'], ['services', '🛠️ خدماتنا'], ['offers', '💰 العروض'], ['special', '⭐ خدمات متخصصة'], ['testimonials', '💬 تقييمات العملاء'], ['pricing', '📊 كيفية التسعير'], ['trust', '🏆 الثقة والضمانات'], ['how', '📋 خطوات العمل'], ['faq', '❓ الأسئلة الشائعة'], ['form', '📝 نموذج الحجز'],             ['blog', '📝 المدونة']].map(([key, label]) => (
+            {[['contacts', '📞 أرقام التواصل'], ['hero', '🎬 البطل الرئيسي'], ['media', '🖼️ الصور والفيديو'], ['popup', '🎁 عرض منبثق'], ['slider', '🖼️ عرض الشرائح'], ['services', '🛠️ خدماتنا'], ['offers', '💰 العروض'], ['special', '⭐ خدمات متخصصة'], ['testimonials', '💬 تقييمات العملاء'], ['pricing', '📊 كيفية التسعير'], ['trust', '🏆 الثقة والضمانات'], ['how', '📋 خطوات العمل'], ['faq', '❓ الأسئلة الشائعة'], ['form', '📝 نموذج الحجز'],             ['blog', '📝 المدونة'],
+            ['settings', '🔐 إعدادات الدخول']].map(([key, label]) => (
               <button key={key} onClick={() => setTab(key)} style={s.tab(tab === key)}>{label}</button>
             ))}
           </div>
@@ -1359,6 +1419,68 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                   }} />
                 <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>كل سطر = خيار واحد في القائمة المنسدلة</p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB: SETTINGS (Credentials) ── */}
+        {tab === 'settings' && (
+          <div style={s.section}>
+            <h2 style={s.sectionTitle}>🔐 إعدادات تسجيل الدخول</h2>
+            <p style={{ fontSize: 13, color: '#52525b', marginBottom: 20 }}>
+              تغيير البريد الإلكتروني وكلمة المرور المستخدمة لدخول لوحة التحكم
+            </p>
+
+            <div style={{ display: 'grid', gap: 16, maxWidth: 440 }}>
+              <div>
+                <label style={s.label}>البريد الإلكتروني الحالي</label>
+                <input style={s.inp} id="settings-current-email" value={settingsEmail} disabled placeholder="admin@hilalymoving.com"
+                  onChange={e => setSettingsEmail(e.target.value)} />
+                <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>يظهر فقط — لا يمكن تغييره من هنا</p>
+              </div>
+
+              <div>
+                <label style={s.label}>البريد الإلكتروني الجديد</label>
+                <input style={s.inp} value={newEmail} placeholder="admin@newemail.com"
+                  onChange={e => setNewEmail(e.target.value)}
+                  onFocus={e => e.target.style.borderColor = '#D4A017'}
+                  onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+              </div>
+
+              <div>
+                <label style={s.label}>كلمة المرور الجديدة</label>
+                <input type="password" style={s.inp} value={newPwd} placeholder="********"
+                  onChange={e => setNewPwd(e.target.value)}
+                  onFocus={e => e.target.style.borderColor = '#D4A017'}
+                  onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+              </div>
+
+              <div>
+                <label style={s.label}>تأكيد كلمة المرور الجديدة</label>
+                <input type="password" style={s.inp} value={confirmPwd} placeholder="********"
+                  onChange={e => setConfirmPwd(e.target.value)}
+                  onFocus={e => e.target.style.borderColor = '#D4A017'}
+                  onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+              </div>
+
+              <div>
+                <label style={s.label}>كلمة المرور الحالية (للتأكيد)</label>
+                <input type="password" style={s.inp} value={currentPwd} placeholder="أدخل كلمة المرور الحالية"
+                  onChange={e => setCurrentPwd(e.target.value)}
+                  onFocus={e => e.target.style.borderColor = '#ef4444'}
+                  onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                <p style={{ fontSize: 11, color: '#ef444499', marginTop: 4 }}>مطلوبة لتأكيد الهوية قبل تغيير البيانات</p>
+              </div>
+
+              {settingsErr && <p style={{ color: '#f87171', fontSize: 13 }}>{settingsErr}</p>}
+              {settingsOk && <p style={{ color: '#4ade80', fontSize: 13 }}>{settingsOk}</p>}
+
+              <button onClick={handleSettingsSave} disabled={settingsBusy} style={{
+                ...s.saveBtn, width: '100%', padding: 13, fontSize: 15,
+                opacity: settingsBusy ? 0.6 : 1,
+              }}>
+                {settingsBusy ? '⏳ جارٍ الحفظ...' : '🔐 حفظ بيانات الدخول'}
+              </button>
             </div>
           </div>
         )}
