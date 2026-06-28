@@ -161,7 +161,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <div style={{ fontSize: 40, marginBottom: 8 }}>🔐</div>
           <h2 style={{ color: '#D4A017', fontSize: 22, fontWeight: 900, marginBottom: 4 }}>لوحة التحكم</h2>
-          <p style={{ color: '#52525b', fontSize: 13 }}>Hilaly Moving — Admin</p>
+          <p style={{ color: '#52525b', fontSize: 13 }}>{draft.ar.nav?.brand || 'الهلالي لنقل الاثاث'} — Admin</p>
         </div>
         <input type="email" placeholder="البريد الإلكتروني" value={email}
           onChange={e => setEmail(e.target.value)} style={{ ...s.inp, marginBottom: 10, fontSize: 15, direction: 'ltr' }}
@@ -187,7 +187,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28, paddingBottom: 20, borderBottom: '1px solid #27272a', flexWrap: 'wrap', gap: 12 }}>
           <div>
             <h1 style={{ fontSize: 22, fontWeight: 900, color: '#D4A017' }}>⚙️ لوحة التحكم</h1>
-            <p style={{ color: '#52525b', fontSize: 12, marginTop: 3 }}>Hilaly Moving — تعديل محتوى الموقع</p>
+            <p style={{ color: '#52525b', fontSize: 12, marginTop: 3 }}>{draft.ar.nav?.brand || 'الهلالي لنقل الاثاث'} — تعديل محتوى الموقع</p>
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
             {dirty && <span style={{ fontSize: 12, color: '#f59e0b', fontWeight: 700 }}>● تغييرات غير محفوظة</span>}
@@ -204,7 +204,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
 
          {/* Tabs */}
           <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
-            {[['contacts', '📞 أرقام التواصل'], ['hero', '🎬 البطل الرئيسي'], ['media', '🖼️ الصور والفيديو'], ['popup', '🎁 عرض منبثق'], ['slider', '🖼️ عرض الشرائح'], ['services', '🛠️ خدماتنا'], ['offers', '💰 العروض'], ['special', '⭐ خدمات متخصصة'], ['testimonials', '💬 تقييمات العملاء'], ['pricing', '📊 كيفية التسعير'], ['trust', '🏆 الثقة والضمانات'], ['how', '📋 خطوات العمل'], ['faq', '❓ الأسئلة الشائعة'], ['form', '📝 نموذج الحجز'], ['footer', '📌 تذييل الموقع']].map(([key, label]) => (
+            {[['contacts', '📞 أرقام التواصل'], ['hero', '🎬 البطل الرئيسي'], ['media', '🖼️ الصور والفيديو'], ['popup', '🎁 عرض منبثق'], ['slider', '🖼️ عرض الشرائح'], ['services', '🛠️ خدماتنا'], ['offers', '💰 العروض'], ['special', '⭐ خدمات متخصصة'], ['testimonials', '💬 تقييمات العملاء'], ['pricing', '📊 كيفية التسعير'], ['trust', '🏆 الثقة والضمانات'], ['how', '📋 خطوات العمل'], ['faq', '❓ الأسئلة الشائعة'], ['form', '📝 نموذج الحجز'],             ['blog', '📝 المدونة']].map(([key, label]) => (
               <button key={key} onClick={() => setTab(key)} style={s.tab(tab === key)}>{label}</button>
             ))}
           </div>
@@ -407,22 +407,6 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                 onBlur={e => e.target.style.borderColor = '#3f3f46'} />
             </div>
 
-            {/* Stats */}
-            <div>
-              <label style={s.label}>الإحصائيات (3 عناصر)</label>
-              {(draft.ar.hero?.stats || []).map(([v, l], i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
-                  <input style={s.inp} value={v} placeholder="القيمة"
-                    onChange={e => { const u = JSON.parse(JSON.stringify(draft)); if (!u.ar.hero) u.ar.hero = { stats: [] }; u.ar.hero.stats[i][0] = e.target.value; setDraft(u); setDirty(true) }}
-                    onFocus={e => e.target.style.borderColor = '#D4A017'}
-                    onBlur={e => e.target.style.borderColor = '#3f3f46'} />
-                  <input style={s.inp} value={l} placeholder="الوصف"
-                    onChange={e => { const u = JSON.parse(JSON.stringify(draft)); if (!u.ar.hero) u.ar.hero = { stats: [] }; u.ar.hero.stats[i][1] = e.target.value; setDraft(u); setDirty(true) }}
-                    onFocus={e => e.target.style.borderColor = '#D4A017'}
-                    onBlur={e => e.target.style.borderColor = '#3f3f46'} />
-                </div>
-              ))}
-            </div>
           </div>
         )}
 
@@ -1379,25 +1363,106 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
           </div>
         )}
 
-        {/* ── TAB: FOOTER ── */}
-        {tab === 'footer' && (
+        {/* ── TAB: BLOG ── */}
+        {tab === 'blog' && (
           <div style={s.section}>
-            <h2 style={s.sectionTitle}>📌 تذييل الموقع</h2>
-            <div style={{ display: 'grid', gap: 16 }}>
+            <h2 style={s.sectionTitle}>📝 المدونة</h2>
+            <p style={{ fontSize: 13, color: '#52525b', marginBottom: 20 }}>إدارة منشورات المدونة — تظهر في صفحة /blog</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
               <div>
-                <label style={s.label}>الشعار الوصفي (tagline)</label>
-                <textarea rows={2} style={{ ...s.inp, resize: 'vertical' }} value={draft.ar.footer?.tag || ''}
-                  placeholder='مثال: ننقل العائلات والشركات في جميع أنحاء مصر منذ ٢٠١٨.'
-                  onChange={e => updDraft('ar.footer.tag', e.target.value)} />
-                <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>يظهر أسفل الشعار في تذييل الموقع</p>
+                <label style={s.label}>عنوان القسم</label>
+                <input style={s.inp} value={draft.ar.blog?.title || ''}
+                  onChange={e => { const u = JSON.parse(JSON.stringify(draft)); if (!u.ar.blog) u.ar.blog = { title: '', sub: '', items: [] }; u.ar.blog.title = e.target.value; setDraft(u); setDirty(true) }} />
               </div>
               <div>
-                <label style={s.label}>حقوق النشر</label>
-                <input style={s.inp} value={draft.ar.footer?.copy || ''}
-                  placeholder='مثال: © 2026 Hilaly Moving. جميع الحقوق محفوظة.'
-                  onChange={e => updDraft('ar.footer.copy', e.target.value)} />
-                <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>يظهر في أسفل التذييل</p>
+                <label style={s.label}>النص الفرعي</label>
+                <input style={s.inp} value={draft.ar.blog?.sub || ''}
+                  onChange={e => { const u = JSON.parse(JSON.stringify(draft)); if (!u.ar.blog) u.ar.blog = { title: '', sub: '', items: [] }; u.ar.blog.sub = e.target.value; setDraft(u); setDirty(true) }} />
               </div>
+            </div>
+
+            <div style={{ display: 'grid', gap: 14 }}>
+              {(draft.ar.blog?.items || []).map((post, i) => (
+                <div key={i} style={{ background: '#27272a', borderRadius: 14, padding: 18, border: '1px solid #3f3f46', position: 'relative' }}>
+                  <button onClick={() => {
+                    const u = JSON.parse(JSON.stringify(draft))
+                    u.ar.blog.items.splice(i, 1)
+                    setDraft(u); setDirty(true)
+                  }} style={{ ...s.dangerBtn, position: 'absolute', top: 12, left: 12 }}>حذف</button>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 12, marginBottom: 12 }}>
+                    <div>
+                      <label style={s.label}>عنوان المقال</label>
+                      <input style={s.inp} value={post.title}
+                        onChange={e => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].title = e.target.value; setDraft(u); setDirty(true) }}
+                        onFocus={e => e.target.style.borderColor = '#D4A017'}
+                        onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                    </div>
+                    <div>
+                      <label style={s.label}>الرابط (slug)</label>
+                      <input style={s.inp} value={post.slug} placeholder="مثال: دليل-نقل-الأثاث"
+                        onChange={e => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].slug = e.target.value; setDraft(u); setDirty(true) }}
+                        onFocus={e => e.target.style.borderColor = '#D4A017'}
+                        onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                      <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>يظهر في الرابط: /blog/{post.slug || 'example-slug'}</p>
+                    </div>
+                    <div>
+                      <label style={s.label}>التاريخ</label>
+                      <input type="date" style={s.inp} value={post.date || ''}
+                        onChange={e => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].date = e.target.value; setDraft(u); setDirty(true) }} />
+                    </div>
+                    <div>
+                      <label style={s.label}>الكاتب</label>
+                      <input style={s.inp} value={post.author || ''}
+                        onChange={e => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].author = e.target.value; setDraft(u); setDirty(true) }}
+                        onFocus={e => e.target.style.borderColor = '#D4A017'}
+                        onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={s.label}>صورة المقال</label>
+                    {post.image && (
+                      <div style={{ position: 'relative', marginBottom: 8, display: 'inline-block' }}>
+                        <img src={post.image} alt="" style={{ width: 200, height: 120, objectFit: 'cover', borderRadius: 10 }} />
+                        <button onClick={() => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].image = ''; setDraft(u); setDirty(true) }}
+                          style={{ position: 'absolute', top: 4, left: 4, width: 24, height: 24, borderRadius: '50%', background: '#7f1d1d', border: 'none', color: '#fca5a5', cursor: 'pointer', fontSize: 14 }}>×</button>
+                      </div>
+                    )}
+                    <IKUploadBtn label="📤 رفع صورة"
+                      onSuccess={url => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].image = url; setDraft(u); setDirty(true) }}
+                      style={{ width: '100%', padding: 12, background: '#27272a', borderRadius: 10, color: '#a1a1aa', fontSize: 13, cursor: 'pointer', textAlign: 'center', border: '1px dashed #3f3f46', display: 'block' }}
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={s.label}>الملخص (excerpt)</label>
+                    <textarea rows={2} style={{ ...s.inp, resize: 'vertical' }} value={post.excerpt || ''} placeholder="ملخص قصير يظهر في بطاقة المقال"
+                      onChange={e => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].excerpt = e.target.value; setDraft(u); setDirty(true) }}
+                      onFocus={e => e.target.style.borderColor = '#D4A017'}
+                      onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                  </div>
+
+                  <div>
+                    <label style={s.label}>محتوى المقال (النص الكامل)</label>
+                    <textarea rows={8} style={{ ...s.inp, resize: 'vertical', lineHeight: 1.8 }} value={post.content || ''}
+                      placeholder="اكتب محتوى المقال هنا... استخدم \n للفاصل بين الفقرات"
+                      onChange={e => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].content = e.target.value; setDraft(u); setDirty(true) }}
+                      onFocus={e => e.target.style.borderColor = '#D4A017'}
+                      onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                    <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>استخدم \n للفاصل بين الفقرات</p>
+                  </div>
+                </div>
+              ))}
+
+              <button onClick={() => {
+                const u = JSON.parse(JSON.stringify(draft))
+                if (!u.ar.blog) u.ar.blog = { title: 'المدونة', sub: '', items: [] }
+                u.ar.blog.items.push({ title: 'مقال جديد', slug: 'مقال-جديد', date: new Date().toISOString().slice(0,10), image: '', excerpt: '', content: '', author: 'فريق الهلالي' })
+                setDraft(u); setDirty(true)
+              }} style={{ padding: 16, borderRadius: 14, border: '2px dashed #3f3f46', background: 'transparent', color: '#52525b', cursor: 'pointer', fontSize: 14, fontWeight: 700 }}>
+                + إضافة مقال جديد
+              </button>
             </div>
           </div>
         )}

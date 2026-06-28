@@ -14,7 +14,7 @@ export default function Home() {
       <Helmet>
         <title>هلالي موفينج - شركة نقل أثاث في القاهرة والإسكندرية وجميع المحافظات</title>
         <meta name="description" content="شركة نقل أثاث في القاهرة (مدينة نصر، مصر الجديدة، المعادي، التجمع الخامس)، الإسكندرية، الشيخ زايد، 6 أكتوبر. فك وتركيب وتغليف بأفضل الأسعار. احصل على عرض سعر مجاني." />
-        <link rel="canonical" href="https://helalymoving.tryasp.net/" />
+        <link rel="canonical" href="https://hilalymoving.com/" />
       </Helmet>
       <HeroSection t={t} scrollTo={scrollTo} />
       <VideoSection video={video} key={video.src} />

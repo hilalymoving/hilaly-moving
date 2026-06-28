@@ -24,7 +24,7 @@ export default function About() {
       <Helmet>
         <title>من نحن - هلالي موفينج | خبراء نقل الأثاث في القاهرة والإسكندرية</title>
         <meta name="description" content="هلالي موفينج شركة نقل أثاث رائدة في القاهرة، الجيزة، الإسكندرية، وجميع المحافظات. أكثر من 10,000 عملية نقل ناجحة. نخدم مدينة نصر، المعادي، التجمع الخامس، الشيخ زايد." />
-        <link rel="canonical" href="https://helalymoving.tryasp.net/about" />
+        <link rel="canonical" href="https://hilalymoving.com/about" />
       </Helmet>
       <div style={{ background: th.heroGradient || `linear-gradient(135deg, #0f172a, #1e1b4b)`, padding: 'clamp(3rem,8vw,5rem) 1.2rem', textAlign: 'center' }}>
         <h1 style={{ fontSize: 'clamp(28px,5vw,48px)', fontWeight: 900, color: '#fff', marginBottom: 16 }}>من نحن</h1>

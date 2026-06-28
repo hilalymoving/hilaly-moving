@@ -18,7 +18,7 @@ export default function Contact() {
       <Helmet>
         <title>اتصل بنا - هلالي موفينج | احصل على عرض سعر مجاني</title>
         <meta name="description" content="تواصل مع هلالي موفينج لنقل الأثاث. اتصل بنا أو أرسل واتساب للحصول على عرض سعر مجاني. فريقنا متاح 24/7 في القاهرة والإسكندرية." />
-        <link rel="canonical" href="https://helalymoving.tryasp.net/contact" />
+        <link rel="canonical" href="https://hilalymoving.com/contact" />
       </Helmet>
       <div style={{ background: th.heroGradient || `linear-gradient(135deg, #0f172a, #1e1b4b)`, padding: 'clamp(3rem,8vw,5rem) 1.2rem', textAlign: 'center' }}>
         <h1 style={{ fontSize: 'clamp(28px,5vw,48px)', fontWeight: 900, color: '#fff', marginBottom: 16 }}>اتصل بنا</h1>

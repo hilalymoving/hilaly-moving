@@ -14,7 +14,7 @@ export default function Pricing() {
       <Helmet>
         <title>أسعار نقل الأثاث في مصر - هلالي موفينج | عروض وخصم 15%</title>
         <meta name="description" content="أسعار نقل الأثاث في القاهرة، الإسكندرية، وجميع المحافظات. باقات تبدأ من 800 ج.م للاستوديو و 2500 ج.م للعائلة. شفافية تامة بدون رسوم مخفية. احصل على عرض سعر مجاني." />
-        <link rel="canonical" href="https://helalymoving.tryasp.net/pricing" />
+        <link rel="canonical" href="https://hilalymoving.com/pricing" />
       </Helmet>
       <div style={{ background: th.heroGradient || `linear-gradient(135deg, #0f172a, #1e1b4b)`, padding: 'clamp(3rem,8vw,5rem) 1.2rem', textAlign: 'center' }}>
         <h1 style={{ fontSize: 'clamp(28px,5vw,48px)', fontWeight: 900, color: '#fff', marginBottom: 16 }}>الأسعار</h1>

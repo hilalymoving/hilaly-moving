@@ -13,7 +13,7 @@ export default function Services() {
       <Helmet>
         <title>خدمات نقل الأثاث - هلالي موفينج | فك، تركيب، تغليف، تخزين | القاهرة والإسكندرية</title>
         <meta name="description" content="خدمات نقل أثاث في القاهرة، مدينة نصر، مصر الجديدة، التجمع الخامس، الشيخ زايد، 6 أكتوبر، والإسكندرية. نقل من الباب للباب، تعبئة وتغليف احترافي، فك وتركيب، تخزين آمن. احجز الآن!" />
-        <link rel="canonical" href="https://helalymoving.tryasp.net/services" />
+        <link rel="canonical" href="https://hilalymoving.com/services" />
       </Helmet>
       {/* Hero */}
       <div style={{ background: th.heroGradient || `linear-gradient(135deg, #0f172a, #1e1b4b)`, padding: 'clamp(3rem,8vw,5rem) 1.2rem', textAlign: 'center' }}>

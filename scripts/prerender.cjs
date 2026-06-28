@@ -9,7 +9,7 @@ if (!fs.existsSync(indexHtml)) {
   process.exit(1)
 }
 
-const routes = ['services', 'contact', 'about', 'pricing']
+const routes = ['services', 'contact', 'about', 'pricing', 'blog']
 
 for (const route of routes) {
   const dir = path.join(dist, route)

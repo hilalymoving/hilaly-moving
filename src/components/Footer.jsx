@@ -37,7 +37,7 @@ export default function Footer({ t }) {
       <div style={{ maxWidth: 700, margin: '0 auto' }}>
 
         {/* Brand */}
-        <div style={{ fontSize: 'clamp(18px,4vw,22px)', fontWeight: 900, color: th.accent, marginBottom: 6 }}>Hilaly Moving</div>
+        <div style={{ fontSize: 'clamp(18px,4vw,22px)', fontWeight: 900, color: th.accent, marginBottom: 6 }}>{t.nav?.brand || 'الهلالي لنقل الاثاث'}</div>
         <p style={{ color: th.textMuted, fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>{t.footer.tag}</p>
 
         {/* Social icons */}

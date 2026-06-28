@@ -4,7 +4,7 @@ export function buildWAMessage(f, lang) {
   const ar = lang === 'ar'
   const lines = ar
     ? [
-        '🚛 *طلب نقل أثاث – نقلة بلس*',
+        '🚛 *طلب نقل أثاث – الهلالي لنقل الاثاث*',
         '━━━━━━━━━━━━━',
         `👤 *الاسم:* ${f.name}`,
         `📱 *واتساب:* ${f.phone}`,
@@ -19,7 +19,7 @@ export function buildWAMessage(f, lang) {
         'أرجو إرسال عرض السعر. شكراً!',
       ]
     : [
-        '🚛 *New Moving Request – Hilaly Moving*',
+        '🚛 *New Moving Request – الهلالي لنقل الاثاث*',
         '━━━━━━━━━━━━━',
         `👤 *Name:* ${f.name}`,
         `📱 *WhatsApp:* ${f.phone}`,

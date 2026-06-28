@@ -48,6 +48,7 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
   const navItems = [
     { label: 'الرئيسية', icon: '🏠', href: '/' },
     { label: 'الخدمات', icon: '🛠️', href: '/services' },
+    { label: 'المدونة', icon: '📝', href: '/blog' },
     { label: 'العروض', icon: '💰', href: '/pricing' },
     { label: 'اتصل بنا', icon: '📞', href: '/contact', highlight: true },
   ]
