@@ -142,6 +142,28 @@ export function ServicesSection({ t }) {
 
   return (
     <section id="services" style={{ padding: 'clamp(3rem,8vw,6rem) 1.2rem', background: th.bg, position: 'relative', overflow: 'hidden' }}>
+      {/* AEO: Service schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "serviceType": t.services.title,
+          "description": t.services.sub,
+          "provider": { "@type": "MovingCompany", "name": "هلالي موفينج" },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "خدمات نقل الأثاث",
+            "itemListElement": t.services.items.map((s, i) => ({
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": s.title,
+                "description": s.desc,
+              },
+            })),
+          },
+        }, null, 2)
+      }} />
       {/* Decorative background */}
       <div style={{ position: 'absolute', inset: 0, backgroundImage: `radial-gradient(circle, ${th.accent}08 1px, transparent 1px)`, backgroundSize: '32px 32px', pointerEvents: 'none' }} />
 
@@ -554,6 +576,26 @@ export function TestimonialsSection({ t }) {
 
   return (
     <section style={{ padding: 'clamp(3rem,8vw,6rem) 1.2rem', background: th.bgSection }}>
+      {/* AEO: Review + AggregateRating schemas */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "هلالي موفينج - خدمات نقل الأثاث",
+          "review": items.map(item => ({
+            "@type": "Review",
+            "reviewRating": { "@type": "Rating", "ratingValue": item.rating || 5, "bestRating": 5 },
+            "author": { "@type": "Person", "name": item.name },
+            "reviewBody": item.text,
+          })),
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": items.length,
+            "bestRating": "5",
+          },
+        }, null, 2)
+      }} />
       <div style={{ maxWidth: 680, margin: '0 auto' }}>
         <SectionHeader title={t.testimonials.title} sub={t.testimonials.sub} />
         <Reveal>

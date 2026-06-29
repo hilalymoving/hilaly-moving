@@ -106,9 +106,54 @@ export default function MainLayout() {
     </div>
   )
 
+  const aoeSchemas = (() => {
+    const schemas = []
+
+    // HowTo schema from CMS howItWorks
+    if (t?.howItWorks?.steps?.length) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": t.howItWorks.title,
+        "description": t.howItWorks.sub,
+        "totalTime": "PT2H",
+        "step": t.howItWorks.steps.map(s => ({
+          "@type": "HowToStep",
+          "position": parseInt(s.num),
+          "name": s.title,
+          "text": s.desc,
+          "image": s.icon,
+        })),
+      })
+    }
+
+    // Speakable: mark primary content sections
+    const speakablePaths = [
+      { cssSelector: '#offers', xpath: '//section[1]' },
+      { cssSelector: '#services', xpath: '//section[2]' },
+    ]
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "هلالي موفينج - شركة نقل أثاث",
+      "description": "شركة نقل أثاث في القاهرة والإسكندرية وجميع المحافظات",
+      "speakable": { "@type": "SpeakableSpecification", "cssSelector": speakablePaths.map(p => p.cssSelector) },
+      "url": "https://hilalymoving.com",
+      "inLanguage": "ar",
+      "isAccessibleForFree": true,
+    })
+
+    return schemas
+  })()
+
   return (
     <HelmetProvider>
       <ThemeCtx.Provider value={th}>
+        {/* AEO JSON-LD Schemas */}
+        {aoeSchemas.map((schema, i) => (
+          <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        ))}
+
         {showPopup && t?.popup?.enabled && (
           <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={closePopup}>
             <style>{`
