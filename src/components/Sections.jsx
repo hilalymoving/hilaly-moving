@@ -128,18 +128,6 @@ export function ServicesSection({ t }) {
 
   const COLORS = ['#D4A017', '#10b981', '#6366f1', '#f59e0b', '#e11d48', '#0ea5e9']
 
-  const extras = [
-    { color: '#D4A017', points: ['فريق مدرب ومحترف', 'تحميل وتفريغ آمن', 'شاحنات مجهزة بالكامل', 'التزام بالمواعيد'], stat: '+١٠٠٠٠', statLabel: 'عملية نقل' },
-    { color: '#10b981', points: ['مواد تغليف عالية الجودة', 'فقاعات هوائية وبطانيات', 'صناديق مخصصة لكل قطعة', 'تغليف الأجهزة الكهربائية'], stat: '١٠٠٪', statLabel: 'أمان مضمون' },
-    { color: '#6366f1', points: ['فك جميع أنواع الأثاث', 'تركيب المطابخ والخزائن', 'إعادة ترتيب في المنزل الجديد', 'أدوات متخصصة'], stat: '٢٤ ساعة', statLabel: 'أسرع تركيب' },
-    { color: '#f59e0b', points: ['مستودعات مؤمنة وآمنة', 'تكييف وحماية من الرطوبة', 'مراقبة على مدار الساعة', 'تأمين شامل على المخزون'], stat: '٣٠+', statLabel: 'مستودع' },
-    { color: '#e11d48', points: ['تغطية دولية شاملة', 'شحن جوي وبحري', 'تخليص جمركي', 'تتبع الشحنة'], stat: '٢٠+', statLabel: 'دولة' },
-    { color: '#0ea5e9', points: ['تخطيط مسبق', 'فريق متخصص', 'أقل وقت توقف', 'ضمان الجدول الزمني'], stat: '٥٠٠+', statLabel: 'شركة' },
-  ]
-
-  // Safe getter — always returns a valid extra even if index exceeds array
-  const getExtra = (i) => extras[i] || { color: COLORS[i % COLORS.length], points: [], stat: '', statLabel: '' }
-
   return (
     <section id="services" style={{ padding: 'clamp(3rem,8vw,6rem) 1.2rem', background: th.bg, position: 'relative', overflow: 'hidden' }}>
       {/* AEO: Service schema */}
@@ -153,7 +141,7 @@ export function ServicesSection({ t }) {
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
             "name": "خدمات نقل الأثاث",
-            "itemListElement": t.services.items.map((s, i) => ({
+            "itemListElement": t.services.items.map((s) => ({
               "@type": "Offer",
               "itemOffered": {
                 "@type": "Service",
@@ -172,7 +160,8 @@ export function ServicesSection({ t }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: 20 }}>
           {t.services.items.map((s, i) => {
-            const ex = getExtra(i)
+            const color = COLORS[i % COLORS.length]
+            const points = s.features || []
             return (
               <Reveal key={i} delay={i * 100} style={{ height: '100%' }}>
                 <div style={{
@@ -184,7 +173,7 @@ export function ServicesSection({ t }) {
                   display: 'flex', flexDirection: 'column',
                   height: '100%',
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = ex.color; e.currentTarget.style.boxShadow = `0 16px 48px ${ex.color}28, 0 0 0 1px ${ex.color}33` ; e.currentTarget.style.transform = 'translateY(-6px)' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.boxShadow = `0 16px 48px ${color}28, 0 0 0 1px ${color}33` ; e.currentTarget.style.transform = 'translateY(-6px)' }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = th.border; e.currentTarget.style.boxShadow = th.shadowSm; e.currentTarget.style.transform = 'none' }}
                 >
                   {/* Service image */}
@@ -202,17 +191,12 @@ export function ServicesSection({ t }) {
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
                       <div style={{
                         width: 48, height: 48, borderRadius: 14,
-                        background: `${ex.color}18`,
-                        border: `1.5px solid ${ex.color}33`,
+                        background: `${color}18`,
+                        border: `1.5px solid ${color}33`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 24,
                       }}>
                         {s.icon}
-                      </div>
-                      {/* Stat badge */}
-                      <div style={{ textAlign: 'left' }}>
-                        <div style={{ fontSize: 16, fontWeight: 900, color: ex.color }}>{ex.stat}</div>
-                        <div style={{ fontSize: 10, color: th.textMuted, fontWeight: 600 }}>{ex.statLabel}</div>
                       </div>
                     </div>
 
@@ -221,21 +205,21 @@ export function ServicesSection({ t }) {
                   </div>
 
                   {/* Divider */}
-                  <div style={{ height: 1, background: `linear-gradient(90deg, ${ex.color}44, transparent)`, margin: '0 22px' }} />
+                  <div style={{ height: 1, background: `linear-gradient(90deg, ${color}44, transparent)`, margin: '0 22px' }} />
 
                   {/* Feature points */}
                   <div style={{ padding: '14px 22px 22px', flex: 1 }}>
                     <div style={{ fontSize: 10, fontWeight: 700, color: th.textMuted, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 }}>يشمل الخدمة</div>
                     <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 7 }}>
-                      {ex.points.map((pt, pi) => (
+                      {points.map((pt, pi) => (
                         <li key={pi} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: th.text }}>
                           <span style={{
                             width: 16, height: 16, borderRadius: '50%', flexShrink: 0,
-                            background: `${ex.color}20`,
+                            background: `${color}20`,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                           }}>
                             <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
-                              <path d="M2 6l3 3 5-5" stroke={ex.color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="M2 6l3 3 5-5" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                           </span>
                           {pt}
@@ -245,7 +229,7 @@ export function ServicesSection({ t }) {
                   </div>
 
                   {/* Bottom accent line */}
-                  <div style={{ height: 3, background: `linear-gradient(90deg, ${ex.color}, ${ex.color}44)` }} />
+                  <div style={{ height: 3, background: `linear-gradient(90deg, ${color}, ${color}44)` }} />
                 </div>
               </Reveal>
             )

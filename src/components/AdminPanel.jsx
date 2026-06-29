@@ -799,6 +799,19 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                       onBlur={e => e.target.style.borderColor = '#3f3f46'} />
                   </div>
                   <div style={{ marginTop: 12 }}>
+                    <label style={s.label}>نقاط الخدمة (واحد في كل سطر)</label>
+                    <textarea rows={4} style={{ ...s.inp, resize: 'vertical', direction: 'rtl' }}
+                      value={(item.features || []).join('\n')}
+                      onChange={e => {
+                        const u = JSON.parse(JSON.stringify(draft))
+                        u.ar.services.items[i].features = e.target.value.split('\n').filter(f => f.trim())
+                        setDraft(u); setDirty(true)
+                      }}
+                      onFocus={e => e.target.style.borderColor = '#D4A017'}
+                      onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                    <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>اكتب كل نقطة في سطر جديد — تظهر تحت "يشمل الخدمة"</p>
+                  </div>
+                  <div style={{ marginTop: 12 }}>
                     <label style={s.label}>صورة الخدمة (اختياري)</label>
                     {item.image && (
                       <div style={{ position: 'relative', marginBottom: 8, display: 'inline-block' }}>
@@ -823,7 +836,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
               <button onClick={() => {
                 const u = JSON.parse(JSON.stringify(draft))
                 if (!u.ar.services) u.ar.services = { title: 'خدماتنا', sub: 'حلول نقل شاملة', items: [] }
-                u.ar.services.items.push({ icon: '🚛', title: 'خدمة جديدة', desc: 'وصف الخدمة هنا' })
+                u.ar.services.items.push({ icon: '🚛', title: 'خدمة جديدة', desc: 'وصف الخدمة هنا', features: ['نقطة أولى', 'نقطة ثانية', 'نقطة ثالثة'] })
                 setDraft(u); setDirty(true)
               }} style={{ padding: 16, borderRadius: 14, border: '2px dashed #3f3f46', background: 'transparent', color: '#52525b', cursor: 'pointer', fontSize: 14, fontWeight: 700 }}>
                 + إضافة خدمة جديدة
