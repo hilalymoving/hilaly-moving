@@ -77,6 +77,8 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
   const tickerItems = [
     { type: 'phone', href: `tel:${t.footer.phone1}`, icon: <PhoneIcon />, label: t.footer.phone1 },
     { type: 'phone', href: `tel:${t.footer.phone2}`, icon: <PhoneIcon />, label: t.footer.phone2 },
+    { type: 'phone', href: `tel:${t.footer.phone3}`, icon: <PhoneIcon />, label: t.footer.phone3 },
+    { type: 'phone', href: `tel:${t.footer.phone4}`, icon: <PhoneIcon />, label: t.footer.phone4 },
     ...activeSocial.map(([key, url]) => ({
       type: 'social', href: url, icon: SOCIAL_META[key]?.icon, label: SOCIAL_META[key]?.label || key,
     })),

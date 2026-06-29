@@ -8,6 +8,7 @@ export default function Contact() {
 
   const contactMethods = [
     { icon: '📞', title: 'اتصل بنا', value: t.footer?.phone1 || '+20 10 12 34 56 78', href: `tel:${t.footer?.phone1}`, color: '#10b981' },
+    { icon: '📞', title: 'رقم ثاني', value: t.footer?.phone2 || '+20 11 98 76 54 32', href: `tel:${t.footer?.phone2}`, color: '#10b981' },
     { icon: '💬', title: 'واتساب', value: t.footer?.phone1 || '+20 10 12 34 56 78', href: `https://wa.me/${(t.footer?.phone1 || '201012345678').replace(/\D/g, '')}`, color: '#25d366' },
     { icon: '✉️', title: 'البريد الإلكتروني', value: t.footer?.email || 'info@hilalymoving.eg', href: `mailto:${t.footer?.email}`, color: '#6366f1' },
     { icon: '📍', title: 'مناطق الخدمة', value: 'القاهرة، الإسكندرية، الجيزة، جميع المحافظات', href: '#', color: '#f59e0b' },

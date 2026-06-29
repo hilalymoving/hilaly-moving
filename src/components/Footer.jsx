@@ -73,6 +73,16 @@ export default function Footer({ t }) {
             onMouseLeave={e => e.currentTarget.style.color = th.textMuted}>
             📞 {t.footer.phone2}
           </a>
+          <a href={`tel:${t.footer.phone3}`} style={{ color: th.textMuted, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}
+            onMouseEnter={e => e.currentTarget.style.color = th.accent}
+            onMouseLeave={e => e.currentTarget.style.color = th.textMuted}>
+            📞 {t.footer.phone3}
+          </a>
+          <a href={`tel:${t.footer.phone4}`} style={{ color: th.textMuted, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}
+            onMouseEnter={e => e.currentTarget.style.color = th.accent}
+            onMouseLeave={e => e.currentTarget.style.color = th.textMuted}>
+            📞 {t.footer.phone4}
+          </a>
           <a href={`mailto:${t.footer.email}`} style={{ color: th.textMuted, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}
             onMouseEnter={e => e.currentTarget.style.color = th.accent}
             onMouseLeave={e => e.currentTarget.style.color = th.textMuted}>

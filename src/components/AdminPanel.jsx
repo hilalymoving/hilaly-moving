@@ -329,6 +329,22 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                   <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>يظهر في الشريط العلوي والفوتر</p>
                 </div>
                 <div>
+                  <label style={s.label}>رقم الهاتف الثالث</label>
+                  <input style={s.inp} value={draft.ar.footer.phone3} placeholder="+20 12 XXXX XXXX"
+                    onChange={e => updDraft('ar.footer.phone3', e.target.value)}
+                    onFocus={e => e.target.style.borderColor = '#D4A017'}
+                    onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                  <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>يظهر في الفوتر</p>
+                </div>
+                <div>
+                  <label style={s.label}>رقم الهاتف الرابع</label>
+                  <input style={s.inp} value={draft.ar.footer.phone4} placeholder="+20 15 XXXX XXXX"
+                    onChange={e => updDraft('ar.footer.phone4', e.target.value)}
+                    onFocus={e => e.target.style.borderColor = '#D4A017'}
+                    onBlur={e => e.target.style.borderColor = '#3f3f46'} />
+                  <p style={{ fontSize: 11, color: '#52525b', marginTop: 4 }}>يظهر في الفوتر</p>
+                </div>
+                <div>
                   <label style={s.label}>البريد الإلكتروني</label>
                   <input style={s.inp} value={draft.ar.footer.email} placeholder="info@example.com"
                     onChange={e => updDraft('ar.footer.email', e.target.value)}
@@ -356,6 +372,8 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                 <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
                   <span style={{ color: '#D4A017', fontSize: 13, fontWeight: 600 }}>📞 {draft.ar.footer.phone1 || '—'}</span>
                   <span style={{ color: '#D4A017', fontSize: 13, fontWeight: 600 }}>📞 {draft.ar.footer.phone2 || '—'}</span>
+                  <span style={{ color: '#D4A017', fontSize: 13, fontWeight: 600 }}>📞 {draft.ar.footer.phone3 || '—'}</span>
+                  <span style={{ color: '#D4A017', fontSize: 13, fontWeight: 600 }}>📞 {draft.ar.footer.phone4 || '—'}</span>
                 </div>
               </div>
             </div>
