@@ -4,7 +4,7 @@ import { useTheme } from '../theme'
 
 export default function BlogPost() {
   const { slug } = useParams()
-  const { t, scrollTo } = useOutletContext()
+  const { t } = useOutletContext()
   const th = useTheme()
 
   const posts = t.blog?.items || []

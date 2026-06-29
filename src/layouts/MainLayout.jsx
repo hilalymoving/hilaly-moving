@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeCtx, THEMES } from '../theme'
 import { CMS } from '../cms'
-import { loadSiteData } from '../firebase'
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 
@@ -45,7 +44,7 @@ export default function MainLayout() {
   const location = useLocation()
 
   useEffect(() => {
-    loadSiteData().then(data => {
+    import('../firebase').then(({ loadSiteData }) => loadSiteData()).then(data => {
       if (data) {
         setContent(mergeCMS(data.content))
         if (data.video) setVideo(data.video)

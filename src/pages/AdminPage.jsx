@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AdminPanel from '../components/AdminPanel'
-import { loadSiteData } from '../firebase'
 import { CMS } from '../cms'
 
 export default function AdminPage() {
@@ -11,7 +10,7 @@ export default function AdminPage() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    loadSiteData().then(data => {
+    import('../firebase').then(({ loadSiteData }) => loadSiteData()).then(data => {
       if (data) {
         setContent(data.content || CMS)
         if (data.video) setVideo(data.video)

@@ -1,5 +1,3 @@
-export const WA_NUMBER = '201012345678' // ← Change to your WhatsApp number
-
 export function buildWAMessage(f, lang) {
   const ar = lang === 'ar'
   const lines = ar

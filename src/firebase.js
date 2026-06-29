@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, getDoc, setDoc, collection, getDocs, query, orderBy, where, limit } from 'firebase/firestore'
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyCVaymrHdpWDd2InNqN7FPprdu4XeiRPxQ",
@@ -13,7 +13,7 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
-export const db = getFirestore(app)
+const db = getFirestore(app)
 
 // Suppress offline warnings in console
 if (typeof window !== 'undefined') {
@@ -98,25 +98,4 @@ export async function saveSiteData(content, video) {
   }
 }
 
-// Get all blog posts
-export async function getBlogPosts() {
-  try {
-    const q = query(collection(db, 'blog'), orderBy('date', 'desc'))
-    const snap = await getDocs(q)
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }))
-  } catch (e) {
-    return []
-  }
-}
 
-// Get single blog post by slug
-export async function getBlogPost(slug) {
-  try {
-    const q = query(collection(db, 'blog'), where('slug', '==', slug), limit(1))
-    const snap = await getDocs(q)
-    if (!snap.empty) return { id: snap.docs[0].id, ...snap.docs[0].data() }
-    return null
-  } catch (e) {
-    return null
-  }
-}

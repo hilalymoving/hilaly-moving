@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { saveSiteData } from '../firebase'
 import { uploadToImageKit } from '../ikUpload'
 
 const s = {
@@ -193,6 +192,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
     setVideo(videoDraft)
     setDirty(false)
     setSaved(false)
+    const { saveSiteData } = await import('../firebase')
     const ok = await saveSiteData(draft, videoDraft)
     if (!ok && videoDraft.src?.startsWith('data:') && videoDraft.src.length > 500000) {
       setSaved('video_large')
