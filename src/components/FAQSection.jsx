@@ -13,6 +13,18 @@ export default function FAQSection({ t }) {
 
   return (
     <section style={{ padding: 'clamp(3rem,8vw,6rem) 1.2rem', background: th.bg }}>
+      {/* Dynamic FAQ JSON-LD */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": t.faq.items.map(item => ({
+            "@type": "Question",
+            "name": item.q,
+            "acceptedAnswer": { "@type": "Answer", "text": item.a }
+          }))
+        }, null, 2)
+      }} />
       <div style={{ maxWidth: 800, margin: '0 auto' }}>
         <SectionHeader title={t.faq.title} sub={t.faq.sub} />
 

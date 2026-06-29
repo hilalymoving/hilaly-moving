@@ -578,37 +578,273 @@ export function TestimonialsSection({ t }) {
 /* ── SERVICE AREAS (GEO) ────────────────────────────────────────────────── */
 export function ServiceAreasSection({ t }) {
   const th = useTheme()
+  const [expanded, setExpanded] = useState(null)
+  const [search, setSearch] = useState('')
   const areas = t.serviceAreas
 
   if (!areas?.cities?.length) return null
 
+  const regions = areas.cities
+  const totalAreas = regions.reduce((s, r) => s + r.areas.length, 0)
+  const expandedAll = expanded === 'all'
+  const searchLower = search.toLowerCase()
+
+  const filteredRegions = search
+    ? regions.filter(r =>
+        r.region.includes(search) ||
+        r.areas.some(a => a.includes(search))
+      ).map(r => ({
+        ...r,
+        areas: r.areas.filter(a => a.includes(search)),
+      }))
+    : regions
+
   return (
-    <section id="service-areas" style={{ padding: 'clamp(3rem,8vw,6rem) 1.2rem', background: th.bg, position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 700, height: 700, borderRadius: '50%', background: `radial-gradient(circle, ${th.accent}08 0%, transparent 70%)`, pointerEvents: 'none' }} />
+    <section id="service-areas" style={{ padding: 'clamp(3rem,8vw,6rem) 1.2rem', background: th.bgSection, position: 'relative', overflow: 'hidden' }}>
+      {/* Background effects */}
+      <div style={{ position: 'absolute', top: '30%', right: '-5%', width: 500, height: 500, borderRadius: '50%', background: `radial-gradient(circle, ${th.accent}08 0%, transparent 70%)`, pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '10%', left: '-5%', width: 400, height: 400, borderRadius: '50%', background: `radial-gradient(circle, ${th.accent}06 0%, transparent 70%)`, pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: `radial-gradient(circle, ${th.accent}06 1px, transparent 1px)`, backgroundSize: '40px 40px', pointerEvents: 'none' }} />
+
       <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <SectionHeader title={areas.title} sub={areas.sub} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,320px),1fr))', gap: 24 }}>
-          {areas.cities.map((region, i) => (
-            <Reveal key={i} delay={i * 100}>
-              <div style={{ background: th.bgCard, borderRadius: 20, border: `1px solid ${th.border}`, boxShadow: th.shadow, overflow: 'hidden' }}>
-                <div style={{ height: 4, background: `linear-gradient(90deg, ${region.color}, ${region.color}66)` }} />
-                <div style={{ padding: '1.5rem 1.5rem 1.2rem' }}>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: region.color, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontSize: 18 }}>{['📍', '🏙️', '🏗️', '🌊', '🌾', '🏜️'][i] || '📍'}</span>
-                    {region.region}
+
+        {/* Stats bar */}
+        <Reveal>
+          <div style={{
+            display: 'flex', justifyContent: 'center', gap: 'clamp(20px,5vw,60px)',
+            flexWrap: 'wrap', marginBottom: 32,
+            padding: 'clamp(16px,3vw,24px) clamp(20px,4vw,40px)',
+            background: th.bgCard, borderRadius: 18,
+            border: `1px solid ${th.border}`,
+            boxShadow: th.shadowSm,
+          }}>
+            {[
+              [`${totalAreas}+`, 'منطقة نخدمها', '📍'],
+              [`${regions.length}`, 'محافظة رئيسية', '🏛️'],
+              ['نفس اليوم', 'خدمة فورية متاحة', '⚡'],
+              ['24/7', 'دعم متواصل', '🛡️'],
+            ].map(([v, l, icon], i) => (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 'clamp(20px,3vw,28px)', fontWeight: 900, color: th.accent }}>{v}</div>
+                <div style={{ fontSize: 11, color: th.textMuted, marginTop: 2 }}>{l}</div>
+                <div style={{ fontSize: 18, marginTop: 2 }}>{icon}</div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* Geo JSON-LD */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "MovingCompany",
+            "name": "الهلالي لنقل الاثاث",
+            "alternateName": "Hilaly Moving",
+            "url": "https://hilalymoving.com",
+            "areaServed": regions.flatMap(r => r.areas.map(a => ({
+              "@type": "City",
+              "name": a,
+              "containedInPlace": { "@type": "City", "name": r.region }
+            }))),
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "خدمات نقل الأثاث حسب المنطقة",
+              "itemListElement": regions.map(r => ({
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": `نقل أثاث في ${r.region}`,
+                  "areaServed": r.areas.map(a => ({ "@type": "City", "name": a })),
+                }
+              }))
+            }
+          }, null, 2)
+        }} />
+
+        {/* Search */}
+        <Reveal delay={80}>
+          <div style={{ marginBottom: 28, position: 'relative', maxWidth: 400, marginLeft: 'auto', marginRight: 'auto' }}>
+            <input
+              type="text"
+              placeholder="ابحث عن منطقتك... (مثال: مدينة نصر، التجمع، سيدي بشر)"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              onFocus={e => e.target.style.borderColor = th.accent}
+              onBlur={e => e.target.style.borderColor = th.border}
+              style={{
+                width: '100%', padding: '12px 18px', paddingRight: 44,
+                borderRadius: 14, border: `1.5px solid ${th.border}`,
+                background: th.bgCard, color: th.text,
+                fontSize: 14, outline: 'none', boxSizing: 'border-box',
+                fontFamily: 'inherit', transition: 'border-color .2s',
+              }}
+            />
+            <span style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 18, opacity: 0.5 }}>🔍</span>
+          </div>
+        </Reveal>
+
+        {/* Region cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,340px),1fr))', gap: 20 }}>
+          {(search ? filteredRegions : regions).map((region, i) => {
+            const isExpanded = expanded === i || expandedAll
+            return (
+              <Reveal key={i} delay={i * 80}>
+                <div style={{
+                  background: th.bgCard, borderRadius: 20,
+                  border: `1px solid ${isExpanded ? region.color : th.border}`,
+                  boxShadow: isExpanded ? `0 8px 32px ${region.color}22` : th.shadowSm,
+                  overflow: 'hidden', transition: 'all .3s',
+                }}
+                  onMouseEnter={e => { if (!isExpanded) { e.currentTarget.style.borderColor = region.color; e.currentTarget.style.boxShadow = `0 8px 28px ${region.color}18` } }}
+                  onMouseLeave={e => { if (!isExpanded) { e.currentTarget.style.borderColor = th.border; e.currentTarget.style.boxShadow = th.shadowSm } }}
+                >
+                  {/* Color top bar */}
+                  <div style={{ height: 4, background: `linear-gradient(90deg, ${region.color}, ${region.color}66)` }} />
+
+                  {/* Header */}
+                  <div style={{ padding: '1.2rem 1.2rem 0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{
+                          width: 40, height: 40, borderRadius: 12,
+                          background: `${region.color}18`,
+                          border: `1px solid ${region.color}33`,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: 20,
+                        }}>
+                          {region.icon || '📍'}
+                        </div>
+                        <div>
+                          <div style={{ fontSize: 15, fontWeight: 800, color: region.color }}>{region.region}</div>
+                          <div style={{ fontSize: 11, color: th.textMuted }}>{region.areas.length} منطقة</div>
+                        </div>
+                      </div>
+                      <button onClick={() => {
+                        if (expandedAll) setExpanded(null)
+                        else setExpanded(expanded === i ? null : i)
+                      }} style={{
+                        width: 28, height: 28, borderRadius: 8,
+                        background: `${region.color}15`, border: `1px solid ${region.color}33`,
+                        color: region.color, cursor: 'pointer', fontSize: 14,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'all .2s',
+                      }}>
+                        {isExpanded ? '−' : '+'}
+                      </button>
+                    </div>
+
+                    {/* Quick peek: first few areas */}
+                    {!isExpanded && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
+                        {region.areas.slice(0, 6).map((area, j) => (
+                          <span key={j} style={{
+                            display: 'inline-block', padding: '3px 8px', borderRadius: 6,
+                            background: `${region.color}12`, color: th.textMuted,
+                            fontSize: 10, fontWeight: 600, border: `1px solid ${th.border}`,
+                          }}>
+                            {area}
+                          </span>
+                        ))}
+                        {region.areas.length > 6 && (
+                          <span style={{ fontSize: 10, color: th.textMuted, padding: '3px 6px' }}>
+                            +{region.areas.length - 6}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {region.areas.map((area, j) => (
-                      <span key={j} style={{ display: 'inline-block', padding: '5px 12px', borderRadius: 99, background: `${region.color}15`, color: th.textMuted, fontSize: 12, fontWeight: 600, border: `1px solid ${th.border}` }}>
-                        {area}
-                      </span>
-                    ))}
+
+                  {/* Expanded area list */}
+                  <div style={{
+                    maxHeight: isExpanded ? 2000 : 0,
+                    overflow: 'hidden',
+                    transition: 'max-height .4s ease',
+                  }}>
+                    <div style={{ padding: '0 1.2rem 1.2rem' }}>
+                      <div style={{
+                        height: 1, background: `linear-gradient(90deg, ${region.color}44, transparent)`,
+                        marginBottom: 12,
+                      }} />
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                        {region.areas.map((area, j) => (
+                          <span key={j} style={{
+                            display: 'inline-block', padding: '6px 13px', borderRadius: 99,
+                            background: `${region.color}12`,
+                            color: th.text, fontSize: 12, fontWeight: 600,
+                            border: `1px solid ${region.color}33`,
+                            transition: 'all .2s',
+                          }}
+                            onMouseEnter={e => { e.currentTarget.style.background = `${region.color}25`; e.currentTarget.style.color = region.color; e.currentTarget.style.borderColor = region.color }}
+                            onMouseLeave={e => { e.currentTarget.style.background = `${region.color}12`; e.currentTarget.style.color = th.text; e.currentTarget.style.borderColor = `${region.color}33` }}
+                          >
+                            {area}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action footer */}
+                  <div style={{
+                    padding: '0 1.2rem 1rem',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    flexWrap: 'wrap', gap: 8,
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: th.textMuted }}>
+                      <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+                      خدمة متاحة
+                    </div>
+                    <a href={`tel:${t.footer?.phone1 || ''}`} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 4,
+                      padding: '5px 12px', borderRadius: 8,
+                      background: `${region.color}15`,
+                      color: region.color, fontSize: 11, fontWeight: 800,
+                      textDecoration: 'none', border: `1px solid ${region.color}33`,
+                      transition: 'all .2s',
+                    }}
+                      onMouseEnter={e => { e.currentTarget.style.background = region.color; e.currentTarget.style.color = '#fff' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = `${region.color}15`; e.currentTarget.style.color = region.color }}
+                    >
+                      📞 احجز الآن
+                    </a>
                   </div>
                 </div>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            )
+          })}
         </div>
+
+        {/* No results */}
+        {search && filteredRegions.length === 0 && (
+          <div style={{ textAlign: 'center', padding: 40, color: th.textMuted, fontSize: 15 }}>
+            لم نعثر على "${search}" — اتصل بنا للاستفسار عن منطقتك
+          </div>
+        )}
+
+        {/* Bottom CTA */}
+        <Reveal delay={300}>
+          <div style={{
+            marginTop: 36, textAlign: 'center',
+            padding: 'clamp(20px,4vw,32px)',
+            borderRadius: 20,
+            background: `linear-gradient(135deg, ${th.bgCard}, transparent)`,
+            border: `1px solid ${th.border}`,
+          }}>
+            <p style={{ color: th.textMuted, fontSize: 14, marginBottom: 16, lineHeight: 1.7 }}>
+              أينما كنت في مصر — فريق الهلالي يصل إليك. اتصل بنا الآن للحصول على عرض سعر فوري ومجاني.
+            </p>
+            <a href={`tel:${t.footer?.phone1 || ''}`} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '12px 28px', borderRadius: 12,
+              background: `linear-gradient(135deg, #D4A017, #B8860B)`,
+              color: '#000', fontWeight: 800, fontSize: 14,
+              textDecoration: 'none', boxShadow: '0 8px 24px rgba(212,160,23,0.35)',
+            }}>
+              📞 اتصل بنا الآن
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
