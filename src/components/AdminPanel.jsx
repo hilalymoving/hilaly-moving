@@ -800,11 +800,11 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                   </div>
                   <div style={{ marginTop: 12 }}>
                     <label style={s.label}>نقاط الخدمة (واحد في كل سطر)</label>
-                    <textarea rows={4} style={{ ...s.inp, resize: 'vertical', direction: 'rtl' }}
+                    <textarea rows={4} style={{ ...s.inp, resize: 'vertical' }}
                       value={(item.features || []).join('\n')}
                       onChange={e => {
                         const u = JSON.parse(JSON.stringify(draft))
-                        u.ar.services.items[i].features = e.target.value.split('\n').filter(f => f.trim())
+                        u.ar.services.items[i].features = e.target.value.split('\n')
                         setDraft(u); setDirty(true)
                       }}
                       onFocus={e => e.target.style.borderColor = '#D4A017'}
@@ -916,7 +916,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                       placeholder={'نقل الأثاث كاملاً\nشاحنة مجهزة\nفريق متدرب\nتسليم في نفس اليوم'}
                       onChange={e => {
                         const u = JSON.parse(JSON.stringify(draft))
-                        u.ar.offers.items[i].features = e.target.value.split('\n').filter(f => f.trim())
+                        u.ar.offers.items[i].features = e.target.value.split('\n')
                         setDraft(u); setDirty(true)
                       }}
                       onFocus={e => e.target.style.borderColor = o.color}

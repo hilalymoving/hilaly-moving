@@ -161,7 +161,7 @@ export function ServicesSection({ t }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: 20 }}>
           {t.services.items.map((s, i) => {
             const color = COLORS[i % COLORS.length]
-            const points = s.features || []
+            const points = (s.features || []).filter(f => f.trim())
             return (
               <Reveal key={i} delay={i * 100} style={{ height: '100%' }}>
                 <div style={{
