@@ -3,6 +3,25 @@ import { useNavigate } from 'react-router-dom'
 import AdminPanel from '../components/AdminPanel'
 import { CMS } from '../cms'
 
+// Same merge as MainLayout — ensures Firestore data is never missing CMS fields
+function mergeAdminCMS(saved) {
+  if (!saved) return CMS
+  return {
+    ar: {
+      ...CMS.ar,
+      ...saved.ar,
+      faq: CMS.ar.faq,
+      nav: saved.ar?.nav !== undefined ? { ...CMS.ar.nav, ...saved.ar.nav } : CMS.ar.nav,
+      services: saved.ar?.services || CMS.ar.services,
+      popup: saved.ar?.popup !== undefined ? saved.ar.popup : CMS.ar.popup,
+      slider: saved.ar?.slider !== undefined ? saved.ar.slider : CMS.ar.slider,
+      footer: { ...CMS.ar.footer, ...saved.ar?.footer },
+      specialServices: saved.ar?.specialServices || CMS.ar.specialServices,
+      blog: saved.ar?.blog || CMS.ar.blog,
+    }
+  }
+}
+
 export default function AdminPage() {
   const navigate = useNavigate()
   const [content, setContent] = useState(CMS)
@@ -12,7 +31,7 @@ export default function AdminPage() {
   useEffect(() => {
     import('../firebase').then(({ loadSiteData }) => loadSiteData()).then(data => {
       if (data) {
-        setContent(data.content || CMS)
+        setContent(mergeAdminCMS(data.content))
         if (data.video) setVideo(data.video)
       }
       setReady(true)
