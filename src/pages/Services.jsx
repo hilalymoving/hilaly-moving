@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { useOutletContext } from 'react-router-dom'
 import { Reveal } from '../Reveal'
 import BookingForm from '../components/BookingForm'
+import Image from '../components/Image'
 
 export default function Services() {
   const { t, th } = useOutletContext()
@@ -34,11 +35,12 @@ export default function Services() {
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 50px rgba(0,0,0,0.15)` }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = th.shadow }}>
                 {s.image && (
-                  <div style={{ width: '100%', height: 200, overflow: 'hidden' }}>
-                    <img src={s.image} alt={s.title} loading="lazy"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s' }}
+                  <div style={{ width: '100%', height: 200, overflow: 'hidden', position: 'relative' }}>
+                    <div style={{ position: 'relative', width: '100%', height: '100%', transition: 'transform .5s' }}
                       onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
-                      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
+                      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+                      <Image src={s.image} alt={s.title} width={600} height={400} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
                   </div>
                 )}
                 <div style={{ padding: '1.5rem' }}>

@@ -3,6 +3,7 @@ import { Link, useOutletContext } from 'react-router-dom'
 import { useTheme } from '../theme'
 import { Reveal } from '../Reveal'
 import SectionHeader from '../components/SectionHeader'
+import Image from '../components/Image'
 
 export default function Blog() {
   const { t } = useOutletContext()
@@ -43,11 +44,12 @@ export default function Blog() {
                       onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = th.shadowSm; e.currentTarget.style.borderColor = th.border }}
                     >
                       {post.image && (
-                        <div style={{ width: '100%', height: 200, overflow: 'hidden', flexShrink: 0 }}>
-                          <img src={post.image} alt={post.title} loading="lazy"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s' }}
+                        <div style={{ width: '100%', height: 200, overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+                          <div style={{ position: 'relative', width: '100%', height: '100%', transition: 'transform .5s' }}
                             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
-                            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
+                            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+                            <Image src={post.image} alt={post.title} width={600} height={400} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          </div>
                         </div>
                       )}
 

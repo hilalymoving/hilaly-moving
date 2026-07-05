@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../theme'
+import Image from './Image'
 
 const FacebookIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -193,7 +194,7 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
               {/* Logo + Brand */}
               {t.nav.logo ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <img src={t.nav.logo} alt="Logo" style={{ height: isMobile ? 28 : 36, objectFit: 'contain', borderRadius: 4 }} />
+                  <Image src={t.nav.logo} alt="هلالي موفينج - الشعار" width={120} height={36} priority style={{ height: isMobile ? 28 : 36, width: 'auto', objectFit: 'contain', borderRadius: 4 }} />
                   <span style={{ fontSize: isMobile ? 14 : 18, fontWeight: 900, color: th.accent }}>{t.nav.brand}</span>
                 </div>
               ) : (

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../theme'
 import { Reveal } from '../Reveal'
+import Image from './Image'
 
 const DEFAULT_SLIDER_ITEMS = [
   { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800', caption: 'نقل أثاث Cairo' },
@@ -153,8 +154,8 @@ export default function HeroSection({ t, scrollTo }) {
               transition: 'transform 0.5s ease-in-out',
             }}>
               {sliderItems.map((img, i) => (
-                <div key={i} style={{ width: `${100 / sliderItems.length}%`, height: '100%', flexShrink: 0 }}>
-                  <img src={img.url} alt={img.caption || 'صورة'} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div key={i} style={{ width: `${100 / sliderItems.length}%`, height: '100%', flexShrink: 0, position: 'relative' }}>
+                  <Image src={img.url} alt={img.caption || 'هلالي موفينج خدمات نقل الأثاث'} width={1200} height={675} priority={i === 0} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               ))}
             </div>

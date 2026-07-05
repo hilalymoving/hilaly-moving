@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams, useOutletContext } from 'react-router-dom'
 import { useTheme } from '../theme'
+import Image from '../components/Image'
 
 export default function BlogPost() {
   const { slug } = useParams()
@@ -76,8 +77,7 @@ export default function BlogPost() {
               borderRadius: 20, overflow: 'hidden', marginBottom: 32,
               boxShadow: `0 8px 32px rgba(0,0,0,0.15)`,
             }}>
-              <img src={post.image} alt={post.title}
-                style={{ width: '100%', maxHeight: 420, objectFit: 'cover', display: 'block' }} />
+              <Image src={post.image} alt={post.title} width={760} height={420} style={{ width: '100%', height: 'auto', objectFit: 'cover', display: 'block' }} />
             </div>
           )}
 

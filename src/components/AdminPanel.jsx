@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { uploadToImageKit } from '../ikUpload'
+import Image from './Image'
 
 const s = {
   page: { minHeight: '100vh', background: '#09090b', color: '#f1f5f9', padding: '24px 20px', fontFamily: "'Cairo','Segoe UI',sans-serif" },
@@ -295,7 +296,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                 <label style={s.label}>شعار (صورة) - اختياري</label>
                 {draft.ar.nav?.logo ? (
                   <div style={{ position: 'relative', marginBottom: 8 }}>
-                    <img src={draft.ar.nav.logo} alt="Logo" style={{ width: 120, height: 60, objectFit: 'contain', borderRadius: 8, background: '#fff' }} />
+                    <Image src={draft.ar.nav.logo} alt="شعار الشركة" width={120} height={60} style={{ objectFit: 'contain', borderRadius: 8, background: '#fff' }} />
                     <button onClick={() => { const u = JSON.parse(JSON.stringify(draft)); if (!u.ar.nav) u.ar.nav = {}; u.ar.nav.logo = ''; setDraft(u); setDirty(true) }}
                       style={{ position: 'absolute', top: 4, left: 4, width: 24, height: 24, borderRadius: '50%', background: '#7f1d1d', border: 'none', color: '#fca5a5', cursor: 'pointer', fontSize: 14 }}>×</button>
                   </div>
@@ -539,8 +540,8 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(160px,1fr))', gap: 12 }}>
                 {draft.ar.gallery.items.map((img, i) => (
                   <div key={i} style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid #3f3f46', background: '#27272a' }}>
-                    <div style={{ position: 'relative' }}>
-                      <img src={img.url} alt={img.caption} loading="lazy" style={{ width: '100%', height: 100, objectFit: 'cover', display: 'block' }} />
+                    <div style={{ position: 'relative', height: 100 }}>
+                      <Image src={img.url} alt={img.caption} width={200} height={100} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                       <button onClick={() => {
                         const u = JSON.parse(JSON.stringify(draft))
                         u.ar.gallery.items.splice(i, 1)
@@ -648,7 +649,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
               <label style={s.label}>صورة الخلفية (اختياري)</label>
               {draft.ar.popup?.bgImage ? (
                 <div style={{ position: 'relative', marginBottom: 8 }}>
-                  <img src={draft.ar.popup.bgImage} alt="Background" style={{ width: '100%', height: 120, objectFit: 'cover', borderRadius: 10 }} />
+                  <Image src={draft.ar.popup.bgImage} alt="صورة خلفية العرض المنبثق" width={600} height={120} style={{ width: '100%', height: 120, objectFit: 'cover', borderRadius: 10 }} />
                   <button onClick={() => { const u = JSON.parse(JSON.stringify(draft)); u.ar.popup.bgImage = ''; setDraft(u); setDirty(true) }}
                     style={{ position: 'absolute', top: 6, left: 6, width: 28, height: 28, borderRadius: '50%', background: '#7f1d1d', border: 'none', color: '#fca5a5', cursor: 'pointer', fontSize: 16 }}>×</button>
                 </div>
@@ -695,8 +696,8 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(160px,1fr))', gap: 12 }}>
               {(draft.ar.slider?.items || []).map((img, i) => (
                 <div key={i} style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid #3f3f46', background: '#27272a' }}>
-                  <div style={{ position: 'relative' }}>
-                    <img src={img.url} alt={img.caption} loading="lazy" style={{ width: '100%', height: 100, objectFit: 'cover', display: 'block' }} />
+                  <div style={{ position: 'relative', height: 100 }}>
+                    <Image src={img.url} alt={img.caption} width={200} height={100} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                     <button onClick={() => {
                       const u = JSON.parse(JSON.stringify(draft))
                       if (!u.ar.slider) u.ar.slider = { items: [] }
@@ -815,7 +816,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                     <label style={s.label}>صورة الخدمة (اختياري)</label>
                     {item.image && (
                       <div style={{ position: 'relative', marginBottom: 8, display: 'inline-block' }}>
-                        <img src={item.image} alt="" style={{ width: 200, height: 120, objectFit: 'cover', borderRadius: 10 }} />
+                        <Image src={item.image} alt={item.title || 'صورة الخدمة'} width={200} height={120} style={{ objectFit: 'cover', borderRadius: 10 }} />
                         <button onClick={() => { const u = JSON.parse(JSON.stringify(draft)); u.ar.services.items[i].image = ''; setDraft(u); setDirty(true) }}
                           style={{ position: 'absolute', top: 4, left: 4, width: 24, height: 24, borderRadius: '50%', background: '#7f1d1d', border: 'none', color: '#fca5a5', cursor: 'pointer', fontSize: 14 }}>×</button>
                       </div>
@@ -1577,7 +1578,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
                     <label style={s.label}>صورة المقال</label>
                     {post.image && (
                       <div style={{ position: 'relative', marginBottom: 8, display: 'inline-block' }}>
-                        <img src={post.image} alt="" style={{ width: 200, height: 120, objectFit: 'cover', borderRadius: 10 }} />
+                        <Image src={post.image} alt={post.title || 'صورة المقال'} width={200} height={120} style={{ objectFit: 'cover', borderRadius: 10 }} />
                         <button onClick={() => { const u = JSON.parse(JSON.stringify(draft)); u.ar.blog.items[i].image = ''; setDraft(u); setDirty(true) }}
                           style={{ position: 'absolute', top: 4, left: 4, width: 24, height: 24, borderRadius: '50%', background: '#7f1d1d', border: 'none', color: '#fca5a5', cursor: 'pointer', fontSize: 14 }}>×</button>
                       </div>

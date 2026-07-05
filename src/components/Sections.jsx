@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTheme } from '../theme'
 import { Reveal } from '../Reveal'
 import SectionHeader from './SectionHeader'
+import Image from './Image'
 
 const mob = typeof window !== 'undefined' && window.innerWidth < 640
 
@@ -178,11 +179,12 @@ export function ServicesSection({ t }) {
                 >
                   {/* Service image */}
                   {s.image && (
-                    <div style={{ width: '100%', height: 180, overflow: 'hidden', flexShrink: 0 }}>
-                      <img src={s.image} alt={s.title} loading="lazy"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s' }}
+                    <div style={{ width: '100%', height: 180, overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+                      <div style={{ position: 'relative', width: '100%', height: '100%', transition: 'transform .5s' }}
                         onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
-                        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'} />
+                        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+                        <Image src={s.image} alt={s.title} width={600} height={400} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
                     </div>
                   )}
 
@@ -484,7 +486,9 @@ export function GallerySection({ t }) {
           <button onClick={e => { e.stopPropagation(); next() }} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', width: 42, height: 42, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>›</button>
           <button onClick={() => setLb(null)} style={{ position: 'absolute', top: 14, right: 14, width: 34, height: 34, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
           <div style={{ maxWidth: 820, width: '100%', borderRadius: 18, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.8)' }} onClick={e => e.stopPropagation()}>
-            <img src={lb.url} alt={lb.caption} style={{ width: '100%', display: 'block', maxHeight: '80vh', objectFit: 'contain', background: '#000' }} />
+            <div style={{ position: 'relative', width: '100%', height: '80vh', maxHeight: 600 }}>
+              <Image src={lb.url} alt={lb.caption} width={820} height={600} style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }} />
+            </div>
             <div style={{ background: '#0f172a', padding: '12px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ color: '#cbd5e1', fontSize: 13, fontWeight: 600 }}>{lb.caption}</span>
               <span style={{ color: '#475569', fontSize: 12 }}>{lbIdx + 1} / {items.length}</span>
@@ -510,7 +514,7 @@ function GalleryCard({ img, i, hovered, setHovered, openLb, th, style = {}, feat
         ...style,
       }}
     >
-      <img src={img.url} alt={img.caption} loading="lazy"
+      <Image src={img.url} alt={img.caption} width={600} height={400}
         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .5s',
           transform: hovered === i ? 'scale(1.06)' : 'scale(1)' }} />
 
