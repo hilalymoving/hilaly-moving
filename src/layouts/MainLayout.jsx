@@ -19,7 +19,7 @@ function mergeCMS(saved) {
     ar: {
       ...CMS.ar,
       ...saved.ar,
-      faq: CMS.ar.faq,
+      faq: saved.ar?.faq || CMS.ar.faq,
       nav: saved.ar?.nav !== undefined ? { ...CMS.ar.nav, ...saved.ar.nav } : CMS.ar.nav,
       services: saved.ar?.services || CMS.ar.services,
       popup: saved.ar?.popup !== undefined ? saved.ar.popup : CMS.ar.popup,
@@ -96,6 +96,7 @@ export default function MainLayout() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
+    import('../analytics').then(({ trackVisit }) => trackVisit(location.pathname))
   }, [location.pathname])
 
   if (loading) return (
@@ -167,7 +168,7 @@ export default function MainLayout() {
                 </div>
                 <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 12, color: '#000' }}>{t.popup.title}</h2>
                 <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 24, color: '#333' }}>{t.popup.desc}</p>
-                <button onClick={() => { closePopup(); document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' }) }} style={{ background: '#D4A017', color: '#fff', border: 'none', padding: '16px 40px', borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: 'pointer', width: '100%', marginBottom: 16 }}>{t.popup.button}</button>
+                <button onClick={() => { closePopup(); (document.getElementById('contact') || document.getElementById('booking'))?.scrollIntoView({ behavior: 'smooth' }) }} style={{ background: '#D4A017', color: '#fff', border: 'none', padding: '16px 40px', borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: 'pointer', width: '100%', marginBottom: 16 }}>{t.popup.button}</button>
                 <button onClick={closePopup} style={{ background: 'none', border: 'none', color: '#666', fontSize: 13, cursor: 'pointer' }}>إغلاق</button>
               </div>
             </div>

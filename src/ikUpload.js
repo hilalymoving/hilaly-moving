@@ -1,46 +1,57 @@
 // Cloudinary unsigned upload
 import { IK_CONFIG } from './imagekit'
 
-export async function uploadToImageKit(file, folder = 'store', resourceType = 'auto') {
-  const isVideo = file.type.startsWith('video/')
+export function uploadToImageKit(file, folder = 'store', resourceType = 'auto', onProgress) {
+  const isVideo = resourceType === 'video' || (resourceType === 'auto' && file.type.startsWith('video/'))
   const MAX_IMAGE_SIZE = 10 * 1024 * 1024
   const MAX_VIDEO_SIZE = 100 * 1024 * 1024
   const maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE
 
   if (file.size > maxSize) {
-    const sizeMB = (file.size / (1024*1024)).toFixed(1)
-    const maxMB = (maxSize / (1024*1024)).toFixed(0)
-    throw new Error(`File too large. Maximum size is ${maxMB}MB for ${isVideo ? 'videos' : 'images'}. Your file is ${sizeMB}MB.`)
+    const sizeMB = (file.size / (1024 * 1024)).toFixed(1)
+    const maxMB = (maxSize / (1024 * 1024)).toFixed(0)
+    return Promise.reject(
+      new Error(`حجم الملف كبير جداً. الحد الأقصى هو ${maxMB}MB (${sizeMB}MB مرفوع).`)
+    )
   }
-
-  const base64 = await new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result.split(',')[1])
-    reader.onerror = reject
-    reader.readAsDataURL(file)
-  })
 
   const resource = isVideo ? 'video' : 'image'
   const uploadUrl = `https://api.cloudinary.com/v1_1/${IK_CONFIG.cloudName}/${resource}/upload`
 
   const formData = new FormData()
-  formData.append('file', `data:${file.type};base64,${base64}`)
+  formData.append('file', file)
   formData.append('upload_preset', 'store folder')
   formData.append('folder', folder)
 
-  const response = await fetch(uploadUrl, { method: 'POST', body: formData })
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', uploadUrl)
 
-  if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.error?.message || 'Upload failed')
-  }
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable && typeof onProgress === 'function') {
+        onProgress(Math.round((e.loaded / e.total) * 100))
+      }
+    }
 
-  const result = await response.json()
+    xhr.onload = () => {
+      try {
+        const result = JSON.parse(xhr.responseText || '{}')
+        if (xhr.status >= 200 && xhr.status < 300 && result.secure_url) {
+          resolve({
+            url: result.secure_url,
+            fileId: result.public_id,
+            name: result.original_filename,
+            filePath: result.public_id,
+          })
+        } else {
+          reject(new Error(result.error?.message || 'فشل رفع الملف'))
+        }
+      } catch {
+        reject(new Error('استجابة غير صالحة من الخادم'))
+      }
+    }
 
-  return {
-    url: result.secure_url,
-    fileId: result.public_id,
-    name: result.original_filename,
-    filePath: result.public_id,
-  }
+    xhr.onerror = () => reject(new Error('تعذر الاتصال بخدمة رفع الملفات'))
+    xhr.send(formData)
+  })
 }

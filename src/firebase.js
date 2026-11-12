@@ -12,8 +12,8 @@ const firebaseConfig = {
   measurementId: "G-6TEMT17R6X"
 }
 
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
+export const app = initializeApp(firebaseConfig)
+export const db = getFirestore(app)
 
 // Suppress offline warnings in console
 if (typeof window !== 'undefined') {

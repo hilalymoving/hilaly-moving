@@ -6,5 +6,28 @@ service cloud.firestore {
       allow write: if request.auth != null
         && request.auth.uid == 'q15mMz7v0IbKk2AkOwv4QEkZxwf1';
     }
+
+    match /visits/{visitId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          'city', 'region', 'country', 'path', 'device', 'referrer', 'isNewSession', 'createdAt'
+        ])
+        && request.resource.data.city is string
+        && request.resource.data.city.size() <= 100
+        && request.resource.data.region is string
+        && request.resource.data.region.size() <= 100
+        && request.resource.data.country is string
+        && request.resource.data.country.size() <= 100
+        && request.resource.data.path is string
+        && request.resource.data.path.size() <= 200
+        && request.resource.data.device in ['mobile', 'tablet', 'desktop']
+        && request.resource.data.referrer is string
+        && request.resource.data.referrer.size() <= 200
+        && request.resource.data.isNewSession is bool
+        && request.resource.data.createdAt is string
+        && request.resource.data.createdAt.size() <= 40;
+
+      allow read, delete: if request.auth != null
+        && request.auth.uid == 'q15mMz7v0IbKk2AkOwv4QEkZxwf1';
+    }
   }
 }
