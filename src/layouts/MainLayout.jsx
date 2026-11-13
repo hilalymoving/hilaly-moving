@@ -56,7 +56,7 @@ export default function MainLayout() {
   const location = useLocation()
 
   useEffect(() => {
-    import('../firebase').then(({ loadSiteData }) => loadSiteData()).then(data => {
+    import('../api').then(({ loadSiteData }) => loadSiteData()).then(data => {
       if (data) {
         setContent(mergeCMS(data.content))
         if (data.video) setVideo(data.video)

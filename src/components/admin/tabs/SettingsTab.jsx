@@ -12,10 +12,16 @@ export default function SettingsTab({ onToast }) {
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
-    import('firebase/auth').then(({ getAuth }) => {
-      const user = getAuth().currentUser
-      if (user) setCurrentEmail(user.email || '')
-    }).catch(() => {})
+    const token = typeof window !== 'undefined' ? localStorage.getItem('hm_token') : null
+    if (!token) return
+    fetch('/api/auth', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.user) setCurrentEmail(data.user.email || '')
+      })
+      .catch(() => {})
   }, [])
 
   const handleSave = async () => {
@@ -27,31 +33,34 @@ export default function SettingsTab({ onToast }) {
 
     setBusy(true)
     try {
-      const { getAuth, EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } = await import('firebase/auth')
-      const auth = getAuth()
-      const user = auth.currentUser
-      if (!user) { setErr('لا يوجد مستخدم مسجل دخوله'); return }
+      const token = localStorage.getItem('hm_token')
+      const res = await fetch('/api/auth', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          currentPassword: currentPwd,
+          newEmail: newEmail.trim() || undefined,
+          newPassword: newPwd || undefined
+        })
+      })
 
-      const credential = EmailAuthProvider.credential(user.email, currentPwd)
-      await reauthenticateWithCredential(user, credential)
-
-      if (newEmail && newEmail !== user.email) await updateEmail(user, newEmail)
-      if (newPwd) await updatePassword(user, newPwd)
-
-      const updated = getAuth().currentUser
-      if (updated) setCurrentEmail(updated.email || '')
-      setNewEmail(''); setNewPwd(''); setConfirmPwd(''); setCurrentPwd('')
-      onToast?.('تم تحديث بيانات الدخول بنجاح', 'success')
-    } catch (e) {
-      const msgs = {
-        'auth/requires-recent-login': 'يرجى تسجيل الخروج وإعادة الدخول ثم المحاولة مرة أخرى',
-        'auth/wrong-password': 'كلمة المرور الحالية غير صحيحة',
-        'auth/invalid-credential': 'كلمة المرور الحالية غير صحيحة',
-        'auth/invalid-email': 'البريد الإلكتروني غير صالح',
-        'auth/email-already-in-use': 'البريد الإلكتروني مستخدم بالفعل',
-        'auth/weak-password': 'كلمة المرور ضعيفة — استخدم 6 أحرف على الأقل',
+      const data = await res.json()
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'فشل التحديث')
       }
-      setErr(msgs[e.code] || 'فشل التحديث: ' + e.message)
+
+      if (data.token) localStorage.setItem('hm_token', data.token)
+      if (data.user?.email) setCurrentEmail(data.user.email)
+      setNewEmail('')
+      setNewPwd('')
+      setConfirmPwd('')
+      setCurrentPwd('')
+      onToast?.(data.message || 'تم تحديث بيانات الدخول بنجاح', 'success')
+    } catch (e) {
+      setErr(e.message || 'فشل التحديث')
     } finally {
       setBusy(false)
     }

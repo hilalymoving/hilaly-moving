@@ -33,7 +33,7 @@ export default function AdminPage() {
     const loader = document.getElementById('app-loading')
     if (loader) loader.style.display = 'none'
 
-    import('../firebase').then(({ loadSiteData }) => loadSiteData()).then(data => {
+    import('../api').then(({ loadSiteData }) => loadSiteData()).then(data => {
       if (data) {
         setContent(mergeAdminCMS(data.content))
         if (data.video) setVideo(data.video)

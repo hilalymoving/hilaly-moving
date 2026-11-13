@@ -1,7 +1,3 @@
-import { collection, addDoc, getDocs, query, orderBy, limit, writeBatch } from 'firebase/firestore/lite'
-import { db } from './firebase'
-
-const GEO_CACHE_KEY = 'hm_geo_cache'
 const SESSION_KEY = 'hm_visit_session'
 
 let lastTrackedPath = ''
@@ -26,37 +22,6 @@ function getCleanReferrer() {
   }
 }
 
-async function resolveGeo() {
-  try {
-    const cached = sessionStorage.getItem(GEO_CACHE_KEY)
-    if (cached) return JSON.parse(cached)
-  } catch {}
-
-  const fallback = { city: 'غير محدد', region: '', country: 'غير محدد' }
-
-  try {
-    const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), 2500)
-    const res = await fetch('https://ipwho.is/?fields=success,city,region,country', {
-      signal: controller.signal,
-    })
-    clearTimeout(timer)
-    if (!res.ok) return fallback
-    const data = await res.json()
-    if (data && data.success !== false) {
-      const geo = {
-        city: (data.city || 'غير محدد').slice(0, 100),
-        region: (data.region || '').slice(0, 100),
-        country: (data.country || 'غير محدد').slice(0, 100),
-      }
-      try { sessionStorage.setItem(GEO_CACHE_KEY, JSON.stringify(geo)) } catch {}
-      return geo
-    }
-  } catch {}
-
-  return fallback
-}
-
 export async function trackVisit(path) {
   if (typeof window === 'undefined') return
   if (!path || path.startsWith('/admin')) return
@@ -77,39 +42,49 @@ export async function trackVisit(path) {
   }
 
   try {
-    const geo = await resolveGeo()
-    await addDoc(collection(db, 'visits'), {
-      city: geo.city,
-      region: geo.region,
-      country: geo.country,
-      path: path.slice(0, 200),
-      device: getDeviceType(),
-      referrer: getCleanReferrer(),
-      isNewSession,
-      createdAt: new Date().toISOString(),
+    // Cloudflare Edge will automatically attach cf-ipcity, cf-region, cf-ipcountry
+    await fetch('/api/visits', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        path: path.slice(0, 200),
+        device: getDeviceType(),
+        referrer: getCleanReferrer(),
+        isNewSession,
+      }),
+      keepalive: true
     })
   } catch {
-    // Silent fail if offline or rules block writes
+    // Silent fail if offline
   }
 }
 
 export async function fetchTrafficData(maxDocs = 2000) {
-  const q = query(
-    collection(db, 'visits'),
-    orderBy('createdAt', 'desc'),
-    limit(maxDocs)
-  )
-  const snap = await getDocs(q)
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }))
+  try {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('hm_token') : null
+    const res = await fetch(`/api/visits?limit=${maxDocs}`, {
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+    })
+    if (!res.ok) return []
+    const data = await res.json()
+    return data.visits || []
+  } catch (err) {
+    console.error('Failed to fetch traffic data:', err)
+    return []
+  }
 }
 
 export async function clearTrafficLogs() {
-  const snap = await getDocs(query(collection(db, 'visits'), limit(500)))
-  if (snap.empty) return 0
-  const batch = writeBatch(db)
-  snap.docs.forEach(d => batch.delete(d.ref))
-  await batch.commit()
-  return snap.size
+  try {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('hm_token') : null
+    const res = await fetch('/api/visits', {
+      method: 'DELETE',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+    })
+    return res.ok
+  } catch {
+    return false
+  }
 }
 
 const PAGE_LABELS = {

@@ -41,32 +41,44 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
   }, [toast])
 
   useEffect(() => {
-    let unsub = () => {}
-    import('firebase/auth').then(({ getAuth, onAuthStateChanged }) => {
-      unsub = onAuthStateChanged(getAuth(), (user) => {
-        setAuth(Boolean(user))
-        setAuthLoading(false)
+    const token = typeof window !== 'undefined' ? localStorage.getItem('hm_token') : null
+    if (!token) {
+      setAuthLoading(false)
+      return
+    }
+    fetch('/api/auth', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.valid) {
+          setAuth(true)
+        } else {
+          localStorage.removeItem('hm_token')
+          setAuth(false)
+        }
       })
-    }).catch(() => setAuthLoading(false))
-    return () => unsub()
+      .catch(() => setAuth(false))
+      .finally(() => setAuthLoading(false))
   }, [])
 
   const login = async () => {
     if (!email || !pwd) { setErr('يرجى إدخال البريد الإلكتروني وكلمة المرور'); return }
     setLogging(true); setErr('')
     try {
-      const { getAuth, signInWithEmailAndPassword } = await import('firebase/auth')
-      await signInWithEmailAndPassword(getAuth(), email, pwd)
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pwd })
+      })
+      const data = await res.json()
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'فشل تسجيل الدخول')
+      }
+      localStorage.setItem('hm_token', data.token)
       setAuth(true)
     } catch (e) {
-      const msgs = {
-        'auth/user-not-found': 'لا يوجد حساب بهذا البريد',
-        'auth/wrong-password': 'كلمة المرور غير صحيحة',
-        'auth/invalid-credential': 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
-        'auth/invalid-email': 'البريد الإلكتروني غير صالح',
-        'auth/too-many-requests': 'تم حظر تسجيل الدخول مؤقتاً — حاول لاحقاً',
-      }
-      setErr(msgs[e.code] || 'فشل تسجيل الدخول: ' + e.message)
+      setErr(e.message || 'فشل تسجيل الدخول')
     } finally {
       setLogging(false)
     }
@@ -74,8 +86,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
 
   const logout = async () => {
     try {
-      const { getAuth, signOut } = await import('firebase/auth')
-      await signOut(getAuth())
+      localStorage.removeItem('hm_token')
       setAuth(false)
       setPwd('')
     } catch {}
@@ -99,7 +110,7 @@ export default function AdminPanel({ content, setContent, video, setVideo, onExi
     setSaving(true)
     setContent(draft)
     setVideo(videoDraft)
-    const { saveSiteData } = await import('../firebase')
+    const { saveSiteData } = await import('../api')
     const ok = await saveSiteData(draft, videoDraft)
     setSaving(false)
     if (ok) {
