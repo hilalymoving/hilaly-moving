@@ -777,16 +777,21 @@ export function ServiceAreasSection({ t }) {
                           <div style={{ fontSize: 11, color: th.textMuted }}>{region.areas.length} منطقة</div>
                         </div>
                       </div>
-                      <button onClick={() => {
-                        if (expandedAll) setExpanded(null)
-                        else setExpanded(expanded === i ? null : i)
-                      }} style={{
-                        width: 28, height: 28, borderRadius: 8,
-                        background: `${region.color}15`, border: `1px solid ${region.color}33`,
-                        color: region.color, cursor: 'pointer', fontSize: 14,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        transition: 'all .2s',
-                      }}>
+                      <button
+                        onClick={() => {
+                          if (expandedAll) setExpanded(null)
+                          else setExpanded(expanded === i ? null : i)
+                        }}
+                        aria-label={isExpanded ? `إغلاق تفاصيل مناطق ${region.region}` : `عرض تفاصيل مناطق ${region.region}`}
+                        aria-expanded={isExpanded}
+                        style={{
+                          minWidth: 44, minHeight: 44, borderRadius: 10,
+                          background: `${region.color}15`, border: `1px solid ${region.color}33`,
+                          color: region.color, cursor: 'pointer', fontSize: 18, fontWeight: 700,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          transition: 'all .2s', padding: 0,
+                        }}
+                      >
                         {isExpanded ? '−' : '+'}
                       </button>
                     </div>

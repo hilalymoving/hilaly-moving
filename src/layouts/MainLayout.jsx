@@ -51,7 +51,7 @@ export default function MainLayout() {
     return { src: '', poster: '', title: '', desc: '' }
   })
   const [loading, setLoading] = useState(false)
-  const [showPopup, setShowPopup] = useState(true)
+  const [showPopup, setShowPopup] = useState(false)
   const [timerLeft, setTimerLeft] = useState(0)
   const location = useLocation()
 
@@ -72,24 +72,39 @@ export default function MainLayout() {
     try { localStorage.setItem('nq_dark', dark) } catch {}
   }, [dark])
 
-  const closePopup = () => setShowPopup(false)
+  const closePopup = () => {
+    setShowPopup(false)
+    try { sessionStorage.setItem('hm_popup_dismissed', 'true') } catch {}
+  }
 
   useEffect(() => {
-    if (loading) return
     const popup = content[lang]?.popup
     if (!popup?.enabled) return
+    try {
+      if (sessionStorage.getItem('hm_popup_dismissed') === 'true') return
+    } catch {}
+
     const hours = popup.timerHours || 3
     const defaultMs = (hours * 60 * 60 * 1000) + (43 * 60 * 1000) + (49 * 1000)
     setTimerLeft(defaultMs)
-    setShowPopup(true)
+
+    // Delay popup by 8s so it never interrupts initial page load or causes layout shift
+    const timer = setTimeout(() => {
+      setShowPopup(true)
+    }, 8000)
+
     const interval = setInterval(() => {
       setTimerLeft(prev => {
         if (prev <= 1000) { clearInterval(interval); return 0 }
         return prev - 1000
       })
     }, 1000)
-    return () => clearInterval(interval)
-  }, [loading])
+
+    return () => {
+      clearTimeout(timer)
+      clearInterval(interval)
+    }
+  }, [content])
 
   useEffect(() => {
     document.documentElement.dir = 'rtl'
@@ -166,8 +181,8 @@ export default function MainLayout() {
         {showPopup && t?.popup?.enabled && (
           <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={closePopup}>
             <style>{`
-              @keyframes popupEnter { 0% { opacity: 0; transform: scale(0.5) translateY(50px); } 70% { transform: scale(1.05) translateY(-10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
-              @keyframes floatBadge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+              @keyframes popupEnter { 0% { opacity: 0; } 100% { opacity: 1; } }
+              @keyframes floatBadge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
             `}</style>
             <div style={{ background: '#fff', padding: 40, borderRadius: 16, maxWidth: 440, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', border: '4px solid #D4A017', animation: 'popupEnter 0.5s ease-out forwards' }} onClick={e => e.stopPropagation()}>
               <div style={{ textAlign: 'center' }}>

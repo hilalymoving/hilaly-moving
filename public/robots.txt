@@ -5,10 +5,13 @@ User-agent: *
 Allow: /
 Allow: /llms.txt
 Allow: /.well-known/ard.json
+Allow: /.well-known/ai-catalog.json
+Allow: /ai-catalog.json
 Disallow: /*?admin=*
 
-# Agent Resource Discovery (ARD) Map
+# Agent Resource Discovery (ARD) Maps
 Agentmap: https://hilalymoving.com/.well-known/ard.json
+Agentmap: https://hilalymoving.com/.well-known/ai-catalog.json
 
 # Sitemap location
 Sitemap: https://hilalymoving.com/sitemap.xml

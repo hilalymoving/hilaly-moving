@@ -41,12 +41,17 @@ export default function FAQSection({ t }) {
                   boxShadow: isOpen ? `0 0 0 1px ${th.accent}33, ${th.shadowSm}` : th.shadowSm,
                   transition: 'border-color .25s, box-shadow .25s',
                 }}>
-                  <button onClick={() => toggle(i)} style={{
-                    width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: 'clamp(14px,3vw,18px) clamp(14px,3vw,22px)',
-                    background: 'none', border: 'none', cursor: 'pointer',
-                    textAlign: 'right', gap: 12,
-                  }}>
+                  <button
+                    onClick={() => toggle(i)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${i}`}
+                    style={{
+                      width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: 'clamp(14px,3vw,18px) clamp(14px,3vw,22px)',
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      textAlign: 'right', gap: 12,
+                    }}
+                  >
                     <span style={{ fontSize: 'clamp(13px,3vw,15px)', fontWeight: 700, color: isOpen ? th.accent : th.text, lineHeight: 1.5, flex: 1, transition: 'color .2s' }}>
                       {item.q}
                     </span>
@@ -65,7 +70,7 @@ export default function FAQSection({ t }) {
                     </span>
                   </button>
 
-                  <div style={{ maxHeight: isOpen ? 300 : 0, overflow: 'hidden', transition: 'max-height .35s ease' }}>
+                  <div id={`faq-answer-${i}`} style={{ maxHeight: isOpen ? 300 : 0, overflow: 'hidden', transition: 'max-height .35s ease' }}>
                     <div style={{ padding: 'clamp(10px,3vw,16px) clamp(14px,3vw,22px) clamp(14px,3vw,20px)', borderTop: `1px solid ${th.border}` }}>
                       <p style={{ color: th.textMuted, fontSize: 'clamp(13px,3vw,14px)', lineHeight: 1.8, margin: 0 }}>
                         {item.a}

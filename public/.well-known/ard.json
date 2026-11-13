@@ -1,10 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-manifest.schema.json",
+  "specVersion": "1.0",
+  "schemaVersion": "1.0",
+  "host": {
+    "displayName": "الهلالي لنقل الاثاث",
+    "identifier": "hilalymoving.com"
+  },
   "entries": [
     {
-      "identifier": "urn:air:hilalymoving.com:services:moving-catalog",
-      "displayName": "الهلالي لنقل الاثاث - خدمات نقل العفش في مصر",
-      "type": "application/json",
+      "identifier": "urn:air:hilalymoving.com:services:moving-services",
+      "displayName": "الهلالي لنقل الاثاث - خدمات نقل العفش",
+      "type": "text/html",
       "description": "دليل وخدمات شركة الهلالي لنقل وتغليف الأثاث المنزلي والمكتبي، فك وتركيب، وأوناش رفع الأثاث بجميع المحافظات.",
       "url": "https://hilalymoving.com/services",
       "representativeQueries": [
@@ -22,9 +28,9 @@
       ]
     },
     {
-      "identifier": "urn:air:hilalymoving.com:booking:instant-quote",
+      "identifier": "urn:air:hilalymoving.com:booking:quote-calculator",
       "displayName": "حجز عرض سعر نقل أثاث - الهلالي موفينج",
-      "type": "application/json",
+      "type": "text/html",
       "description": "واجهة حجز واستعلام فوري عن تكلفة ومواعيد نقل الأثاث وتغليف العفش في مصر.",
       "url": "https://hilalymoving.com/contact",
       "representativeQueries": [
