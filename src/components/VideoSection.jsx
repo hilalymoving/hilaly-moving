@@ -99,11 +99,17 @@ export default function VideoSection({ video }) {
               background: '#000',
               border: '1px solid rgba(212,160,23,0.2)',
               boxShadow: '0 40px 100px rgba(0,0,0,0.4)',
+              minHeight: 320,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
               <video
                 ref={videoRef}
                 src={optimizedSrc}
                 poster={posterUrl}
+                width={352}
+                height={640}
                 controls
                 muted
                 playsInline
@@ -111,7 +117,7 @@ export default function VideoSection({ video }) {
                 onPlay={() => setPlaying(true)}
                 onPause={() => setPlaying(false)}
                 onEnded={() => setPlaying(false)}
-                style={{ width: '100%', display: 'block', maxHeight: 520, objectFit: 'contain' }}
+                style={{ width: '100%', height: 'auto', maxHeight: 520, aspectRatio: '352 / 640', objectFit: 'contain', display: 'block' }}
               >
                 <track
                   kind="captions"

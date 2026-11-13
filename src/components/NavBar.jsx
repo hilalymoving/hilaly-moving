@@ -200,7 +200,14 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
               {/* Logo + Brand */}
               {t.nav.logo ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <Image src={t.nav.logo} alt="هلالي موفينج - الشعار" width={120} height={36} priority style={{ height: isMobile ? 28 : 36, width: isMobile ? 93 : 120, aspectRatio: '120/36', objectFit: 'contain', borderRadius: 4 }} />
+                  <Image
+                    src={t.nav.logo}
+                    alt="هلالي موفينج - الشعار"
+                    width={36}
+                    height={36}
+                    priority
+                    style={{ height: isMobile ? 28 : 36, width: isMobile ? 28 : 36, aspectRatio: '1/1', objectFit: 'contain', borderRadius: 6 }}
+                  />
                   <span style={{ fontSize: isMobile ? 14 : 18, fontWeight: 900, color: th.accent }}>{t.nav.brand}</span>
                 </div>
               ) : (

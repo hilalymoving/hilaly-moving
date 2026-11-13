@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeCtx, THEMES } from '../theme'
-import { CMS } from '../cms'
+import { CMS, CMS_VIDEO } from '../cms'
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 
@@ -48,7 +48,7 @@ export default function MainLayout() {
       const savedVideo = localStorage.getItem('nq_video')
       if (savedVideo) return JSON.parse(savedVideo)
     } catch {}
-    return { src: '', poster: '', title: '', desc: '' }
+    return CMS_VIDEO || { src: '', poster: '', title: '', desc: '' }
   })
   const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
@@ -88,10 +88,21 @@ export default function MainLayout() {
     const defaultMs = (hours * 60 * 60 * 1000) + (43 * 60 * 1000) + (49 * 1000)
     setTimerLeft(defaultMs)
 
-    // Delay popup by 8s so it never interrupts initial page load or causes layout shift
-    const timer = setTimeout(() => {
+    let shown = false
+    const triggerPopup = () => {
+      if (shown) return
+      shown = true
       setShowPopup(true)
-    }, 8000)
+      window.removeEventListener('scroll', onScroll)
+    }
+
+    const onScroll = () => {
+      if (window.scrollY > 400) {
+        triggerPopup()
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
 
     const interval = setInterval(() => {
       setTimerLeft(prev => {
@@ -101,7 +112,7 @@ export default function MainLayout() {
     }, 1000)
 
     return () => {
-      clearTimeout(timer)
+      window.removeEventListener('scroll', onScroll)
       clearInterval(interval)
     }
   }, [content])
