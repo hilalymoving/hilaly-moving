@@ -26,10 +26,10 @@ export default function Footer({ t }) {
   const social = t.footer.social || {}
 
   const socialLinks = [
-    { key: 'facebook',  icon: <FacebookIcon />,  label: 'Facebook',  color: '#1877f2', bg: '#1877f222' },
-    { key: 'instagram', icon: <InstagramIcon />, label: 'Instagram', color: '#e1306c', bg: '#e1306c22' },
-    { key: 'whatsapp',  icon: <WhatsAppIcon />,  label: 'WhatsApp',  color: '#25d366', bg: '#25d36622' },
-    { key: 'tiktok',    icon: <TikTokIcon />,    label: 'TikTok',    color: '#f1f5f9', bg: '#ffffff18' },
+    { key: 'facebook',  icon: <FacebookIcon />,  label: 'Facebook',  color: '#ffffff', bg: '#1877f2' },
+    { key: 'instagram', icon: <InstagramIcon />, label: 'Instagram', color: '#ffffff', bg: '#c13584' },
+    { key: 'whatsapp',  icon: <WhatsAppIcon />,  label: 'WhatsApp',  color: '#ffffff', bg: '#047857' },
+    { key: 'tiktok',    icon: <TikTokIcon />,    label: 'TikTok',    color: '#ffffff', bg: '#0f172a' },
   ].filter(s => social[s.key])
 
   return (
@@ -45,15 +45,17 @@ export default function Footer({ t }) {
           <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
             {socialLinks.map(({ key, icon, label, color, bg }) => (
               <a key={key} href={social[key]} target="_blank" rel="noopener noreferrer"
+                aria-label={`زيارة صفحة الهلالي لنقل الأثاث على ${label}`}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 7,
                   padding: '8px 16px', borderRadius: 12,
-                  background: bg, border: `1px solid ${color}33`,
+                  background: bg, border: `1px solid rgba(0,0,0,0.1)`,
                   color, textDecoration: 'none', fontSize: 13, fontWeight: 700,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                   transition: 'all .2s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = `${color}33`; e.currentTarget.style.transform = 'translateY(-2px)' }}
-                onMouseLeave={e => { e.currentTarget.style.background = bg; e.currentTarget.style.transform = 'none' }}
+                onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.1)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+                onMouseLeave={e => { e.currentTarget.style.filter = 'none'; e.currentTarget.style.transform = 'none' }}
               >
                 {icon} {label}
               </a>
@@ -91,7 +93,7 @@ export default function Footer({ t }) {
         </div>
 
         <div style={{ height: 1, background: `linear-gradient(90deg, transparent, ${th.border}, transparent)`, marginBottom: 16 }} />
-        <div style={{ fontSize: 11, color: th.textMuted, opacity: 0.5 }}>{t.footer.copy}</div>
+        <div style={{ fontSize: 12, color: th.textMuted, fontWeight: 500 }}>{t.footer.copy}</div>
       </div>
     </footer>
   )

@@ -1,68 +1,50 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { useTheme } from '../theme'
 import { Reveal } from '../Reveal'
+
+function getOptimizedVideoSrc(url) {
+  if (!url || typeof url !== 'string') return url
+  if (url.includes('cloudinary.com') && url.includes('/video/upload/')) {
+    return url.replace(/\/video\/upload\/(?:[a-z0-9_,:-]+\/)?/, '/video/upload/q_auto,vc_auto,w_850,c_limit/')
+  }
+  return url
+}
+
+function getOptimizedPoster(video) {
+  if (video?.poster) return video.poster
+  const src = video?.src
+  if (src && typeof src === 'string' && src.includes('cloudinary.com') && src.includes('/video/upload/')) {
+    return src
+      .replace(/\/video\/upload\/(?:[a-z0-9_,:-]+\/)?/, '/video/upload/so_0,w_850,c_limit,f_auto,q_auto/')
+      .replace(/\.[^.]+$/, '.jpg')
+  }
+  return undefined
+}
 
 export default function VideoSection({ video }) {
   const th = useTheme()
   const [playing, setPlaying] = useState(false)
-  const [hasAutoPlayed, setHasAutoPlayed] = useState(false)
-  const [autoplayBlocked, setAutoplayBlocked] = useState(false)
   const videoRef = useRef(null)
-  const sectionRef = useRef(null)
 
   if (!video?.src) return null
 
+  const optimizedSrc = getOptimizedVideoSrc(video.src)
+  const posterUrl = getOptimizedPoster(video)
+
   const toggle = () => {
     if (!videoRef.current) return
-    if (playing) { 
+    if (playing) {
       videoRef.current.pause()
       setPlaying(false)
-    } else { 
+    } else {
       videoRef.current.play()
         .then(() => setPlaying(true))
-        .catch(() => setAutoplayBlocked(true))
+        .catch(() => {})
     }
   }
 
-  // Autoplay when video comes into view
-  useEffect(() => {
-    if (!videoRef.current || !sectionRef.current) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // When video is 50% visible and hasn't autoplayed yet
-          if (entry.isIntersecting && !hasAutoPlayed && videoRef.current) {
-            // Try to autoplay
-            const playPromise = videoRef.current.play()
-            
-            if (playPromise !== undefined) {
-              playPromise
-                .then(() => {
-                  setPlaying(true)
-                  setHasAutoPlayed(true)
-                  setAutoplayBlocked(false)
-                })
-                .catch((err) => {
-                  // Autoplay blocked by browser (common on iOS)
-                  console.log('Autoplay prevented - user interaction required')
-                  setAutoplayBlocked(true)
-                  setHasAutoPlayed(true) // Don't try again
-                })
-            }
-          }
-        })
-      },
-      { threshold: 0.3 } // Lower threshold for better mobile experience
-    )
-
-    observer.observe(sectionRef.current)
-
-    return () => observer.disconnect()
-  }, [hasAutoPlayed])
-
   return (
-    <section ref={sectionRef} style={{
+    <section style={{
       padding: 'clamp(3rem,8vw,6rem) 1.2rem',
       background: th.bg,
       position: 'relative',
@@ -120,30 +102,41 @@ export default function VideoSection({ video }) {
             }}>
               <video
                 ref={videoRef}
-                src={video.src}
+                src={optimizedSrc}
+                poster={posterUrl}
                 controls
                 muted
                 playsInline
-                preload="metadata"
-                webkit-playsinline="true"
-                x5-playsinline="true"
+                preload="none"
                 onPlay={() => setPlaying(true)}
                 onPause={() => setPlaying(false)}
                 onEnded={() => setPlaying(false)}
                 style={{ width: '100%', display: 'block', maxHeight: 520, objectFit: 'contain' }}
-              />
+              >
+                <track
+                  kind="captions"
+                  src="/captions-ar.vtt"
+                  srcLang="ar"
+                  label="العربية"
+                  default
+                />
+              </video>
 
-              {/* Play overlay - show if not playing OR if autoplay was blocked */}
-              {(!playing || autoplayBlocked) && (
-                <div
+              {/* Play overlay */}
+              {!playing && (
+                <button
+                  type="button"
                   onClick={toggle}
+                  aria-label="تشغيل فيديو خدمات الهلالي لنقل الأثاث"
                   style={{
                     position: 'absolute', inset: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(0,0,0,0.45)', cursor: 'pointer', transition: 'background .2s',
+                    background: 'rgba(0,0,0,0.35)', cursor: 'pointer',
+                    transition: 'background .2s',
+                    border: 'none', padding: 0, width: '100%',
                   }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.25)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.45)'}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.2)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.35)'}
                 >
                   <div style={{
                     width: 76, height: 76, borderRadius: '50%',
@@ -159,26 +152,7 @@ export default function VideoSection({ video }) {
                       <path d="M8 5v14l11-7z"/>
                     </svg>
                   </div>
-                  
-                  {/* Tap to play hint for mobile */}
-                  {autoplayBlocked && (
-                    <div style={{
-                      position: 'absolute',
-                      bottom: 30,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: 'rgba(0,0,0,0.8)',
-                      color: '#fff',
-                      padding: '8px 16px',
-                      borderRadius: 20,
-                      fontSize: 13,
-                      fontWeight: 600,
-                      whiteSpace: 'nowrap',
-                    }}>
-                      👆 اضغط للتشغيل
-                    </div>
-                  )}
-                </div>
+                </button>
               )}
             </div>
           </div>

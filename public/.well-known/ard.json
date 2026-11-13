@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-manifest.schema.json",
+  "entries": [
+    {
+      "identifier": "urn:air:hilalymoving.com:services:moving-catalog",
+      "displayName": "الهلالي لنقل الاثاث - خدمات نقل العفش في مصر",
+      "type": "application/json",
+      "description": "دليل وخدمات شركة الهلالي لنقل وتغليف الأثاث المنزلي والمكتبي، فك وتركيب، وأوناش رفع الأثاث بجميع المحافظات.",
+      "url": "https://hilalymoving.com/services",
+      "representativeQueries": [
+        "نقل أثاث في القاهرة",
+        "شركة نقل عفش في الإسكندرية",
+        "ونش رفع أثاث هيدروليكي"
+      ],
+      "tags": [
+        "moving",
+        "furniture",
+        "egypt",
+        "cairo",
+        "alexandria",
+        "packing"
+      ]
+    },
+    {
+      "identifier": "urn:air:hilalymoving.com:booking:instant-quote",
+      "displayName": "حجز عرض سعر نقل أثاث - الهلالي موفينج",
+      "type": "application/json",
+      "description": "واجهة حجز واستعلام فوري عن تكلفة ومواعيد نقل الأثاث وتغليف العفش في مصر.",
+      "url": "https://hilalymoving.com/contact",
+      "representativeQueries": [
+        "حجز نقل عفش في نفس اليوم",
+        "أسعار نقل الأثاث في مصر",
+        "تكلفة نقل عفش بالتجمع الخامس والشيخ زايد"
+      ],
+      "tags": [
+        "booking",
+        "quotes",
+        "moving-services",
+        "egypt"
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, orderBy, limit, writeBatch } from 'firebase/firestore'
+import { collection, addDoc, getDocs, query, orderBy, limit, writeBatch } from 'firebase/firestore/lite'
 import { db } from './firebase'
 
 const GEO_CACHE_KEY = 'hm_geo_cache'

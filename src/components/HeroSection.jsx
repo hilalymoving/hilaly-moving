@@ -163,13 +163,61 @@ export default function HeroSection({ t, scrollTo }) {
             {/* Navigation buttons */}
             {sliderItems.length > 1 && (
               <>
-                <button onClick={prevSlide} style={{ position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)', width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', fontSize: 20, fontWeight: 700, cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>‹</button>
-                <button onClick={nextSlide} style={{ position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)', width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', fontSize: 20, fontWeight: 700, cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>›</button>
+                <button
+                  onClick={prevSlide}
+                  aria-label="الشريحة السابقة"
+                  style={{
+                    position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)',
+                    width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.6)',
+                    color: '#fff', border: 'none', fontSize: 24, fontWeight: 700,
+                    cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >
+                  ‹
+                </button>
+                <button
+                  onClick={nextSlide}
+                  aria-label="الشريحة التالية"
+                  style={{
+                    position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)',
+                    width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.6)',
+                    color: '#fff', border: 'none', fontSize: 24, fontWeight: 700,
+                    cursor: 'pointer', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >
+                  ›
+                </button>
                 
-                {/* Pagination dots */}
-                <div style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6, padding: '6px 12px', background: 'rgba(0,0,0,0.5)', borderRadius: 20, zIndex: 10 }}>
+                {/* Pagination dots with 44px accessible touch targets */}
+                <div style={{
+                  position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)',
+                  display: 'flex', alignItems: 'center', gap: 2, padding: '2px 8px',
+                  background: 'rgba(0,0,0,0.6)', borderRadius: 24, zIndex: 10,
+                }}>
                   {sliderItems.map((_, i) => (
-                    <div key={i} onClick={() => setSlideIdx(i)} style={{ width: slideIdx === i ? 16 : 8, height: 8, borderRadius: 10, background: slideIdx === i ? '#D4A017' : 'rgba(255,255,255,0.4)', cursor: 'pointer', transition: 'all 0.3s' }} />
+                    <button
+                      key={i}
+                      onClick={() => setSlideIdx(i)}
+                      aria-label={`انتقال إلى الشريحة ${i + 1}`}
+                      aria-current={slideIdx === i ? 'true' : undefined}
+                      style={{
+                        minWidth: 44, minHeight: 44, padding: 0,
+                        background: 'transparent', border: 'none',
+                        cursor: 'pointer', display: 'flex',
+                        alignItems: 'center', justifyContent: 'center',
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: slideIdx === i ? 20 : 8,
+                          height: 8,
+                          borderRadius: 99,
+                          background: slideIdx === i ? '#D4A017' : 'rgba(255,255,255,0.5)',
+                          display: 'block',
+                          transition: 'background-color 0.2s, opacity 0.2s',
+                        }}
+                      />
+                    </button>
                   ))}
                 </div>
               </>

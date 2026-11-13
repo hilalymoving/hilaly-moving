@@ -36,9 +36,21 @@ export default function MainLayout() {
   const [dark, setDark] = useState(() => {
     try { return localStorage.getItem('nq_dark') === 'true' } catch { return false }
   })
-  const [content, setContent] = useState(CMS)
-  const [video, setVideo] = useState({ src: '', poster: '', title: '', desc: '' })
-  const [loading, setLoading] = useState(true)
+  const [content, setContent] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nq_content')
+      if (saved) return mergeCMS(JSON.parse(saved))
+    } catch {}
+    return CMS
+  })
+  const [video, setVideo] = useState(() => {
+    try {
+      const savedVideo = localStorage.getItem('nq_video')
+      if (savedVideo) return JSON.parse(savedVideo)
+    } catch {}
+    return { src: '', poster: '', title: '', desc: '' }
+  })
+  const [loading, setLoading] = useState(false)
   const [showPopup, setShowPopup] = useState(true)
   const [timerLeft, setTimerLeft] = useState(0)
   const location = useLocation()
@@ -48,15 +60,11 @@ export default function MainLayout() {
       if (data) {
         setContent(mergeCMS(data.content))
         if (data.video) setVideo(data.video)
-      } else {
         try {
-          const saved = localStorage.getItem('nq_content')
-          if (saved) setContent(mergeCMS(JSON.parse(saved)))
-          const savedVideo = localStorage.getItem('nq_video')
-          if (savedVideo) setVideo(JSON.parse(savedVideo))
+          if (data.content) localStorage.setItem('nq_content', JSON.stringify(data.content))
+          if (data.video) localStorage.setItem('nq_video', JSON.stringify(data.video))
         } catch {}
       }
-      setLoading(false)
     })
   }, [])
 
@@ -163,13 +171,13 @@ export default function MainLayout() {
             `}</style>
             <div style={{ background: '#fff', padding: 40, borderRadius: 16, maxWidth: 440, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.4)', border: '4px solid #D4A017', animation: 'popupEnter 0.5s ease-out forwards' }} onClick={e => e.stopPropagation()}>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ background: '#D4A017', color: '#fff', padding: '10px 20px', borderRadius: 8, fontSize: 14, fontWeight: 700, display: 'inline-block', marginBottom: 20, animation: 'floatBadge 2s ease-in-out infinite' }}>
+                <div style={{ background: '#D4A017', color: '#000', padding: '10px 20px', borderRadius: 8, fontSize: 14, fontWeight: 800, display: 'inline-block', marginBottom: 20, animation: 'floatBadge 2s ease-in-out infinite' }}>
                   ⏰ العرض ينتهي خلال: {formatTime(timerLeft)}
                 </div>
                 <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 12, color: '#000' }}>{t.popup.title}</h2>
                 <p style={{ fontSize: 16, lineHeight: 1.6, marginBottom: 24, color: '#333' }}>{t.popup.desc}</p>
-                <button onClick={() => { closePopup(); (document.getElementById('contact') || document.getElementById('booking'))?.scrollIntoView({ behavior: 'smooth' }) }} style={{ background: '#D4A017', color: '#fff', border: 'none', padding: '16px 40px', borderRadius: 10, fontSize: 16, fontWeight: 700, cursor: 'pointer', width: '100%', marginBottom: 16 }}>{t.popup.button}</button>
-                <button onClick={closePopup} style={{ background: 'none', border: 'none', color: '#666', fontSize: 13, cursor: 'pointer' }}>إغلاق</button>
+                <button onClick={() => { closePopup(); (document.getElementById('contact') || document.getElementById('booking'))?.scrollIntoView({ behavior: 'smooth' }) }} style={{ background: '#D4A017', color: '#000', border: 'none', padding: '16px 40px', borderRadius: 10, fontSize: 16, fontWeight: 800, cursor: 'pointer', width: '100%', marginBottom: 16 }}>{t.popup.button}</button>
+                <button onClick={closePopup} aria-label="إغلاق النافذة المنبثقة" style={{ background: 'none', border: 'none', color: '#334155', fontSize: 14, fontWeight: 600, cursor: 'pointer', padding: '8px 16px' }}>إغلاق</button>
               </div>
             </div>
           </div>

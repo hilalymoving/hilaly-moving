@@ -1,33 +1,33 @@
 # Robots.txt for الهلالي لنقل الاثاث
-# https://helalymoving.tryasp.net
+# https://hilalymoving.com
 
 User-agent: *
 Allow: /
-
-# Disallow admin panel
+Allow: /llms.txt
+Allow: /.well-known/ard.json
 Disallow: /*?admin=*
 
+# Agent Resource Discovery (ARD) Map
+Agentmap: https://hilalymoving.com/.well-known/ard.json
+
 # Sitemap location
-Sitemap: https://helalymoving.tryasp.net/sitemap.xml
+Sitemap: https://hilalymoving.com/sitemap.xml
 
 # Crawl-delay for polite crawling
 Crawl-delay: 1
 
-# Allow all major search engines
+# Allow all major search engines and AI agents
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: Slurp
+User-agent: GPTBot
 Allow: /
 
-User-agent: DuckDuckBot
+User-agent: Claude-Web
 Allow: /
 
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
+User-agent: Applebot
 Allow: /

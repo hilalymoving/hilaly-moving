@@ -52,35 +52,67 @@ export default function BookingForm({ t, lang }) {
           <div style={{ background: th.bgCard, borderRadius: 22, padding: isMobile ? 18 : 32, boxShadow: '0 32px 80px rgba(0,0,0,.3)', border: `1px solid ${th.border}` }}>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 14 }}>
 
-              {[['name', 'namePh'], ['phone', 'phonePh'], ['from', 'fromPh'], ['to', 'toPh']].map(([k, ph]) => (
+              {[['name', 'namePh', 'text'], ['phone', 'phonePh', 'tel'], ['from', 'fromPh', 'text'], ['to', 'toPh', 'text']].map(([k, ph, type]) => (
                 <div key={k}>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form[k]}</label>
-                  <input style={inp} placeholder={t.form[ph]} value={f[k]} onChange={e => set(k, e.target.value)}
+                  <label htmlFor={`booking-${k}`} style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form[k]}</label>
+                  <input
+                    id={`booking-${k}`}
+                    name={k}
+                    type={type}
+                    aria-label={t.form[k]}
+                    style={inp}
+                    placeholder={t.form[ph]}
+                    value={f[k]}
+                    onChange={e => set(k, e.target.value)}
                     onFocus={e => e.target.style.borderColor = th.accent}
-                    onBlur={e => e.target.style.borderColor = th.border} />
+                    onBlur={e => e.target.style.borderColor = th.border}
+                  />
                 </div>
               ))}
 
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.date}</label>
-                <input type="date" style={inp} value={f.date} onChange={e => set('date', e.target.value)}
+                <label htmlFor="booking-date" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.date}</label>
+                <input
+                  id="booking-date"
+                  name="date"
+                  type="date"
+                  aria-label={t.form.date}
+                  style={inp}
+                  value={f.date}
+                  onChange={e => set('date', e.target.value)}
                   onFocus={e => e.target.style.borderColor = th.accent}
-                  onBlur={e => e.target.style.borderColor = th.border} />
+                  onBlur={e => e.target.style.borderColor = th.border}
+                />
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.rooms}</label>
-                <select style={inp} value={f.rooms} onChange={e => set('rooms', e.target.value)}>
-                  <option value="">—</option>
+                <label htmlFor="booking-rooms" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.rooms}</label>
+                <select
+                  id="booking-rooms"
+                  name="rooms"
+                  aria-label={t.form.rooms}
+                  style={inp}
+                  value={f.rooms}
+                  onChange={e => set('rooms', e.target.value)}
+                >
+                  <option value="">— {t.form.rooms} —</option>
                   {t.form.roomsOpts.map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
               </div>
 
               <div style={{ gridColumn: isMobile ? '1' : '1/-1' }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.floor}</label>
-                <input style={inp} placeholder={t.form.floorPh} value={f.floor} onChange={e => set('floor', e.target.value)}
+                <label htmlFor="booking-floor" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.floor}</label>
+                <input
+                  id="booking-floor"
+                  name="floor"
+                  aria-label={t.form.floor}
+                  style={inp}
+                  placeholder={t.form.floorPh}
+                  value={f.floor}
+                  onChange={e => set('floor', e.target.value)}
                   onFocus={e => e.target.style.borderColor = th.accent}
-                  onBlur={e => e.target.style.borderColor = th.border} />
+                  onBlur={e => e.target.style.borderColor = th.border}
+                />
               </div>
 
               <div style={{ gridColumn: isMobile ? '1' : '1/-1' }}>
@@ -89,12 +121,19 @@ export default function BookingForm({ t, lang }) {
                   {t.form.servicesOpts.map(s => {
                     const on = f.services.includes(s)
                     return (
-                      <button key={s} type="button" onClick={() => tog(s)} style={{
-                        padding: '6px 12px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all .2s',
-                        background: on ? th.accent : th.bgSection,
-                        color: on ? '#000' : th.text,
-                        border: `1.5px solid ${on ? th.accent : th.border}`,
-                      }}>
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => tog(s)}
+                        aria-pressed={on}
+                        aria-label={`خدمة ${s}`}
+                        style={{
+                          padding: '6px 12px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all .2s',
+                          background: on ? th.accent : th.bgSection,
+                          color: on ? '#000' : th.text,
+                          border: `1.5px solid ${on ? th.accent : th.border}`,
+                        }}
+                      >
                         {on ? '✓ ' : ''}{s}
                       </button>
                     )
@@ -103,22 +142,37 @@ export default function BookingForm({ t, lang }) {
               </div>
 
               <div style={{ gridColumn: isMobile ? '1' : '1/-1' }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.notes}</label>
-                <textarea rows={3} style={{ ...inp, resize: 'vertical' }} placeholder={t.form.notesPh} value={f.notes} onChange={e => set('notes', e.target.value)}
+                <label htmlFor="booking-notes" style={{ display: 'block', fontSize: 12, fontWeight: 700, color: th.textMuted, marginBottom: 5 }}>{t.form.notes}</label>
+                <textarea
+                  id="booking-notes"
+                  name="notes"
+                  aria-label={t.form.notes}
+                  rows={3}
+                  style={{ ...inp, resize: 'vertical' }}
+                  placeholder={t.form.notesPh}
+                  value={f.notes}
+                  onChange={e => set('notes', e.target.value)}
                   onFocus={e => e.target.style.borderColor = th.accent}
-                  onBlur={e => e.target.style.borderColor = th.border} />
+                  onBlur={e => e.target.style.borderColor = th.border}
+                />
               </div>
             </div>
 
-            <button onClick={submit} disabled={busy || !ok} style={{
-              marginTop: 18, width: '100%', padding: 14, borderRadius: 12,
-              background: ok ? 'linear-gradient(135deg,#D4A017,#B8860B)' : th.border,
-              color: ok ? '#000' : th.textMuted,
-              fontSize: 16, fontWeight: 800, border: 'none',
-              cursor: ok ? 'pointer' : 'not-allowed',
-              boxShadow: ok ? '0 8px 28px rgba(212,160,23,0.4)' : 'none',
-              transition: 'all .3s',
-            }}>
+            <button
+              type="button"
+              onClick={submit}
+              disabled={busy || !ok}
+              aria-label="إرسال طلب حجز نقل الأثاث عبر واتساب"
+              style={{
+                marginTop: 18, width: '100%', padding: 14, borderRadius: 12,
+                background: ok ? 'linear-gradient(135deg,#D4A017,#B8860B)' : th.border,
+                color: ok ? '#000' : th.textMuted,
+                fontSize: 16, fontWeight: 800, border: 'none',
+                cursor: ok ? 'pointer' : 'not-allowed',
+                boxShadow: ok ? '0 8px 28px rgba(212,160,23,0.4)' : 'none',
+                transition: 'all .3s',
+              }}
+            >
               {busy ? t.form.submitting : t.form.submit}
             </button>
           </div>

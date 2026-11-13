@@ -160,13 +160,19 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
             {/* Mobile: Hamburger + Logo together on left */}
             <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 8 : 10 }}>
               {isMobile && (
-                <button data-menu onClick={() => setMenuOpen(!menuOpen)} style={{
-                  display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4,
-                  width: 36, height: 36, background: menuOpen ? th.accent : 'transparent', 
-                  border: `1px solid ${th.accent}`,
-                  borderRadius: 8, cursor: 'pointer', padding: 6,
-                  transition: 'all .3s',
-                }}>
+                <button
+                  data-menu
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  aria-label={menuOpen ? 'إغلاق القائمة الرئيسية' : 'فتح القائمة الرئيسية'}
+                  aria-expanded={menuOpen}
+                  style={{
+                    display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4,
+                    width: 36, height: 36, background: menuOpen ? th.accent : 'transparent', 
+                    border: `1px solid ${th.accent}`,
+                    borderRadius: 8, cursor: 'pointer', padding: 6,
+                    transition: 'all .3s',
+                  }}
+                >
                   <div style={{ 
                     height: 2, 
                     background: menuOpen ? '#000' : '#D4A017', 
@@ -194,7 +200,7 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
               {/* Logo + Brand */}
               {t.nav.logo ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <Image src={t.nav.logo} alt="هلالي موفينج - الشعار" width={120} height={36} priority style={{ height: isMobile ? 28 : 36, width: 'auto', objectFit: 'contain', borderRadius: 4 }} />
+                  <Image src={t.nav.logo} alt="هلالي موفينج - الشعار" width={120} height={36} priority style={{ height: isMobile ? 28 : 36, width: isMobile ? 93 : 120, aspectRatio: '120/36', objectFit: 'contain', borderRadius: 4 }} />
                   <span style={{ fontSize: isMobile ? 14 : 18, fontWeight: 900, color: th.accent }}>{t.nav.brand}</span>
                 </div>
               ) : (
@@ -221,13 +227,17 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
               )}
 
               {/* Dark/Light toggle */}
-              <button onClick={() => setDark(!dark)} style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                padding: '7px 10px', borderRadius: 10,
-                border: `1px solid ${th.border}`,
-                background: th.bgCard, color: th.text,
-                cursor: 'pointer', transition: 'all .2s',
-              }}>
+              <button
+                onClick={() => setDark(!dark)}
+                aria-label={dark ? 'تفعيل الوضع المضيء' : 'تفعيل الوضع الليلي'}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '7px 10px', borderRadius: 10,
+                  border: `1px solid ${th.border}`,
+                  background: th.bgCard, color: th.text,
+                  cursor: 'pointer', transition: 'all .2s',
+                }}
+              >
                 {dark ? (
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="5"/>
@@ -351,6 +361,7 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
                 href={`https://wa.me/${t.footer?.phone1?.replace(/\D/g, '') || ''}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="تواصل عبر واتساب مباشر"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -376,6 +387,7 @@ export default function NavBar({ lang, dark, setDark, t, scrollTo }) {
               {/* Phone button */}
               <a 
                 href={`tel:${t.footer?.phone1}`}
+                aria-label="اتصل بنا الآن عبر الهاتف"
                 style={{
                   display: 'flex',
                   alignItems: 'center',

@@ -482,9 +482,9 @@ export function GallerySection({ t }) {
       {/* Lightbox */}
       {lb && (
         <div onClick={() => setLb(null)} style={{ position: 'fixed', inset: 0, zIndex: 999, background: 'rgba(0,0,0,.96)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <button onClick={e => { e.stopPropagation(); prev() }} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 42, height: 42, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>‹</button>
-          <button onClick={e => { e.stopPropagation(); next() }} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', width: 42, height: 42, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>›</button>
-          <button onClick={() => setLb(null)} style={{ position: 'absolute', top: 14, right: 14, width: 34, height: 34, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+          <button onClick={e => { e.stopPropagation(); prev() }} aria-label="الصورة السابقة" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>‹</button>
+          <button onClick={e => { e.stopPropagation(); next() }} aria-label="الصورة التالية" style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: 24, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>›</button>
+          <button onClick={() => setLb(null)} aria-label="إغلاق المعرض" style={{ position: 'absolute', top: 14, right: 14, width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', fontSize: 20, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
           <div style={{ maxWidth: 820, width: '100%', borderRadius: 18, overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.8)' }} onClick={e => e.stopPropagation()}>
             <div style={{ position: 'relative', width: '100%', height: '80vh', maxHeight: 600 }}>
               <Image src={lb.url} alt={lb.caption} width={820} height={600} style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }} />
@@ -595,9 +595,36 @@ export function TestimonialsSection({ t }) {
             <div style={{ color: th.textMuted, fontSize: 12, marginTop: 3 }}>{items[idx].role}</div>
           </div>
         </Reveal>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 4, marginTop: 16 }}>
           {items.map((_, i) => (
-            <button key={i} onClick={() => setIdx(i)} style={{ width: i === idx ? 24 : 7, height: 7, borderRadius: 99, background: i === idx ? th.accent : th.border, border: 'none', cursor: 'pointer', transition: 'all .3s', padding: 0 }} />
+            <button
+              key={i}
+              onClick={() => setIdx(i)}
+              aria-label={`رأي العميل ${i + 1}`}
+              aria-current={i === idx ? 'true' : undefined}
+              style={{
+                minWidth: 44,
+                minHeight: 44,
+                padding: 0,
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span
+                style={{
+                  width: i === idx ? 24 : 8,
+                  height: 8,
+                  borderRadius: 99,
+                  background: i === idx ? th.accent : th.border,
+                  display: 'block',
+                  transition: 'background-color .2s, opacity .2s',
+                }}
+              />
+            </button>
           ))}
         </div>
       </div>
@@ -825,18 +852,21 @@ export function ServiceAreasSection({ t }) {
                       <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
                       خدمة متاحة
                     </div>
-                    <a href={`tel:${t.footer?.phone1 || ''}`} style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 4,
-                      padding: '5px 12px', borderRadius: 8,
-                      background: `${region.color}15`,
-                      color: region.color, fontSize: 11, fontWeight: 800,
-                      textDecoration: 'none', border: `1px solid ${region.color}33`,
-                      transition: 'all .2s',
-                    }}
+                    <a
+                      href={`tel:${t.footer?.phone1 || ''}`}
+                      aria-label={`اتصل هاتفياً لحجز موعد نقل في ${region.region}`}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 4,
+                        padding: '6px 14px', borderRadius: 8,
+                        background: `${region.color}15`,
+                        color: region.color, fontSize: 12, fontWeight: 800,
+                        textDecoration: 'none', border: `1px solid ${region.color}33`,
+                        transition: 'all .2s',
+                      }}
                       onMouseEnter={e => { e.currentTarget.style.background = region.color; e.currentTarget.style.color = '#fff' }}
                       onMouseLeave={e => { e.currentTarget.style.background = `${region.color}15`; e.currentTarget.style.color = region.color }}
                     >
-                      📞 احجز الآن
+                      📞 اتصل للحجز
                     </a>
                   </div>
                 </div>
